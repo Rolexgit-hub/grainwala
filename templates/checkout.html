@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+
+<style>
+:root{
+  --gw-primary:#2e7d32;
+  --gw-primary-soft:#e8f5e9;
+  --gw-border:#e0e0e0;
+  --gw-text:#333;
+  --gw-muted:#757575;
+  --gw-bg:#e6f9e6;
+}
+body{background:var(--gw-bg);font-family:Arial,sans-serif;}
+.checkout-wrapper{max-width:1100px;margin:20px auto 40px;display:flex;gap:24px;align-items:flex-start;padding:0 16px;}
+@media (max-width:900px){.checkout-wrapper{flex-direction:column}.left,.right{width:100%}}
+.left{width:65%}.right{width:35%}
+.box{background:#fff;padding:16px 18px;border-radius:8px;border:1px solid var(--gw-border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:16px;}
+.box h3{margin:0 0 8px;font-size:17px;color:var(--gw-text);}
+.box-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.change-btn{background:transparent;border:1px solid var(--gw-primary);color:var(--gw-primary);cursor:pointer;font-size:13px;padding:4px 10px;border-radius:16px}
+.address{border:1px solid #ddd;padding:12px;margin-bottom:10px;border-radius:5px;position:relative}
+.address.default{border-color:#4caf50;background:#e8f5e9}
+.address input[type="radio"]{position:absolute;top:12px;left:12px}
+.address-details{margin-left:30px}
+.btn{padding:5px 10px;border:none;border-radius:4px;cursor:pointer;margin-right:5px}
+.btn-edit{background:#2196f3;color:#fff}
+.btn-delete{background:#f44336;color:#fff}
+.btn-add{background:#4caf50;color:#fff;display:block;width:100%;margin-top:10px}
+#address-form{display:none;margin-top:20px}
+#address-form input,#address-form textarea{width:100%;padding:8px;margin:5px 0 10px;border:1px solid #ccc;border-radius:4px}
+.payment-option{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:6px;border:1px solid var(--gw-border);margin:8px 0;cursor:pointer}
+.item{display:flex;justify-content:space-between;margin:6px 0;font-size:14px}
+.item.total{font-weight:600}
+.place-btn{width:100%;padding:11px 0;background:var(--gw-primary);color:#fff;border:none;margin-top:12px;border-radius:4px;font-size:15px;font-weight:600}
+</style>
+
+<div class="checkout-wrapper">
+
+<!-- LEFT -->
+<div class="left">
+
+<!-- ADDRESS -->
+<div class="box">
+<div class="box-header">
+  <h3>Select Delivery Address</h3>
+  <button class="change-btn" onclick="showAddForm()">+ Add New</button>
+</div>
+
+{% for addr in addresses %}
+<div class="address {% if addr.is_default %}default{% endif %}">
+  <input type="radio"
+         name="address_radio"
+         value="{{ addr.id }}"
+         data-name="{{ addr.fullname }}"
+         data-phone="{{ addr.phone }}"
+         data-address="{{ addr.address }}, {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}"
+         {% if addr.is_default %}checked{% endif %}
+         onchange="selectAddress(this)">
+
+  <div class="address-details">
+    <strong>{{ addr.fullname }}</strong> | {{ addr.phone }}<br>
+    {{ addr.address }}, {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}<br>
+
+    <button type="button"
+            class="btn btn-edit"
+            data-id="{{ addr.id }}"
+            onclick="editAddress(this)">
+      Edit
+    </button>
+
+    <button type="button"
+            class="btn btn-delete"
+            data-id="{{ addr.id }}"
+            onclick="deleteAddress(this)">
+      Delete
+    </button>
+  </div>
+</div>
+{% endfor %}
+
+<!-- ADD / EDIT FORM -->
+<div id="address-form">
+<h3 id="form-title">Add New Address</h3>
+<form method="POST" id="saveAddressForm" action="{{ url_for('add_address') }}">
+  <input type="hidden" name="address_id" id="address_id">
+  <input type="text" name="fullname" placeholder="Full Name" required>
+  <input type="text" name="phone" placeholder="Phone" required>
+  <textarea name="address" placeholder="Address" required></textarea>
+  <input type="text" name="city" placeholder="City" required>
+  <input type="text" name="state" placeholder="State" required>
+  <input type="text" name="pincode" placeholder="Pincode" required>
+  <button class="btn btn-add">Save Address</button>
+  <button type="button" class="btn btn-delete" onclick="hideForm()">Cancel</button>
+</form>
+</div>
+</div>
+
+<!-- PAYMENT (UNCHANGED + COMPLETE) -->
+<form class="box" method="POST" action="{{ url_for('process_payment') }}">
+<h3>Payment Method</h3>
+
+<label class="payment-option">
+  <input type="radio" name="paymentmethod" value="COD" checked> Cash On Delivery
+</label>
+<label class="payment-option">
+  <input type="radio" name="paymentmethod" value="CARD"> Debit / Credit Card
+</label>
+<label class="payment-option">
+  <input type="radio" name="paymentmethod" value="UPI"> UPI
+</label>
+<label class="payment-option">
+  <input type="radio" name="paymentmethod" value="NETBANKING"> Net Banking
+</label>
+
+<!-- ADDRESS DATA -->
+<input type="hidden" name="ship_name" id="ship_name">
+<input type="hidden" name="ship_phone" id="ship_phone">
+<input type="hidden" name="ship_address" id="ship_address">
+
+<button class="place-btn">Place Order</button>
+</form>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+<div class="box">
+<h3>Order Summary</h3>
+{% for item in cart_items %}
+<div class="item">
+  <span>{{ item.name }} × {{ item.qty }}</span>
+  <span>₹{{ item.subtotal }}</span>
+</div>
+{% endfor %}
+<hr>
+<div class="item total">
+  <span>Total</span>
+  <span>₹{{ totalprice }}</span>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function selectAddress(el){
+  document.getElementById("ship_name").value = el.dataset.name;
+  document.getElementById("ship_phone").value = el.dataset.phone;
+  document.getElementById("ship_address").value = el.dataset.address;
+}
+
+window.onload = function(){
+  let d = document.querySelector('input[name="address_radio"]:checked');
+  if(d){ selectAddress(d); }
+}
+
+function showAddForm(){
+  document.getElementById("address-form").style.display="block";
+  document.getElementById("saveAddressForm").action="{{ url_for('add_address') }}";
+}
+
+function hideForm(){
+  document.getElementById("address-form").style.display="none";
+}
+
+function editAddress(btn){
+  const id = btn.dataset.id;
+  console.log("Editing ID:", id);   // 👈 DEBUG
+
+  fetch("/get_address/" + id)
+    .then(r => {
+      if(!r.ok){ throw "Fetch failed"; }
+      return r.json();
+    })
+    .then(d => {
+      console.log("Address data:", d); // 👈 DEBUG
+
+      document.getElementById("address-form").style.display = "block";
+      document.getElementById("saveAddressForm").action = "/edit_address/" + id;
+
+      document.getElementsByName("fullname")[0].value = d.fullname || "";
+      document.getElementsByName("phone")[0].value = d.phone || "";
+      document.getElementsByName("address")[0].value = d.address || "";
+      document.getElementsByName("city")[0].value = d.city || "";
+      document.getElementsByName("state")[0].value = d.state || "";
+      document.getElementsByName("pincode")[0].value = d.pincode || "";
+    })
+    .catch(err => {
+      alert("Edit load failed. Check console.");
+      console.error(err);
+    });
+}
+
+function deleteAddress(btn){
+  const id = btn.dataset.id;
+  if(confirm("Delete this address?")){
+    fetch("/delete_address/" + id, { method: "POST" })
+      .then(() => location.reload());
+  }
+}
+
+document.querySelector('.place-btn').addEventListener('click', function(e){
+    // Selected address
+    const addr = document.querySelector('input[name="address_radio"]:checked');
+    if(!addr){
+        alert("Please select a delivery address!");
+        e.preventDefault(); // form submit रोको
+        return;
+    }
+
+    // Selected payment
+    const payment = document.querySelector('input[name="paymentmethod"]:checked');
+    if(!payment){
+        alert("Please select a payment method!");
+        e.preventDefault();
+        return;
+    }
+
+    // Hidden inputs set होना चाहिए
+    document.getElementById("ship_name").value = addr.dataset.name;
+    document.getElementById("ship_phone").value = addr.dataset.phone;
+    document.getElementById("ship_address").value = addr.dataset.address;
+});
+</script>
+
+{% endblock %}

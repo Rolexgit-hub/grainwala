@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block title %}Home - GrainWala{% endblock %}
+{% block content %}
+
+<div class="container">
+
+  <div class="tagline">
+    <h1>Fresh Grains Direct from Indian Farmers</h1>
+    <p>
+      Pure, chemical-free grains from trusted Indian farmers<br>
+      supporting livelihoods and bringing you nature’s untouched goodness.
+    </p>
+    <a href="{{ url_for('products_page') }}" class="btn1">Shop Now →</a>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slideshow-container">
+    <img id="slideshow"
+         src="{{ url_for('static', filename='images/Farm1.jpg') }}"
+         class="farmers-image"
+         data-images='[
+           "{{ url_for("static", filename="images/Farm1.jpg") }}",
+           "{{ url_for("static", filename="images/Farm2.jpg") }}",
+           "{{ url_for("static", filename="images/Farm3.jpg") }}"
+         ]'>
+  </div>
+
+  <!-- ================= FEATURED PRODUCTS ================= -->
+  <section class="featured-products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+
+      {% for product in featured_products %}
+    <div class="product-card">
+
+  {% if product.image and product.image|length > 0 %}
+    <img src="{{ url_for('static', filename='images/' ~ product.image[0]) }}">
+  {% else %}
+    <img src="{{ url_for('static', filename='images/default.png') }}">
+  {% endif %}
+
+  {% if product.stock_status %}
+    <span class="fresh-stock-badge">{{ product.stock_status }}</span>
+  {% endif %}
+
+  <h3>{{ product.name }}</h3>
+  <p class="price">₹{{ product.price_min }}</p>
+  <p>{{ product.description }}</p>
+
+  <form action="{{ url_for('add_to_wishlist', product_id=product.id) }}" method="POST">
+    <button type="submit">❤️ Add to Wishlist</button>
+  </form>
+
+  <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+    <label>Weight</label>
+    <select name="weight">
+      {% for w in product.weights %}
+        <option value="{{ w }}">{{ w }}</option>
+      {% endfor %}
+    </select>
+
+    <div class="quantity">
+      <button type="button" class="minus">-</button>
+      <input type="number" name="qty" value="1" min="1">
+      <button type="button" class="plus">+</button>
+    </div>
+
+    <button type="submit" class="cart-btn">🛒 Add to Basket</button>
+  </form>
+
+</div>
+
+      {% endfor %}
+    </div>
+  </section>
+
+ <!-- Link to all products -->
+    <div class="view-more">
+      <a href="{{ url_for('products_page') }}" class="btn-more">View More Products →</a>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <h2>Why Trust GrainWala?</h2>
+    <p class="trust-subtitle">
+      We bring you the best quality grains directly from farmers with complete safety and trust.
+    </p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="icon">🌿</div>
+        <h3>100% Natural</h3>
+        <p>Chemical-free, freshly packed for your family’s health.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">👨‍🌾</div>
+        <h3>Direct from Farmers</h3>
+        <p>Freshly sourced from trusted farmers.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">🚚</div>
+        <h3>Free Delivery ₹500+</h3>
+        <p>Fast, safe & doorstep delivery.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">🔒</div>
+        <h3>Secure & Trusted</h3>
+        <p>Safe payments & reliable service.</p>
+      </div>
+    </div>
+  </section>
+ <!-- ================= POPULAR PRODUCTS ================= -->
+<section class="popular-products">
+  <h2>Popular Products</h2>
+  <div class="product-grid">
+
+    {% for product in popular_products %}
+    <div class="product-card">
+
+      {% if product.image and product.image|length > 0 %}
+        <img src="{{ url_for('static', filename='images/' ~ product.image[0]) }}">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/default.png') }}">
+      {% endif %}
+
+      {% if product.stock_status %}
+        <span class="fresh-stock-badge">{{ product.stock_status }}</span>
+      {% endif %}
+
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹{{ product.price_min }}</p>
+      <p>{{ product.description }}</p>
+
+      <form action="{{ url_for('add_to_wishlist', product_id=product.id) }}" method="POST">
+        <button type="submit">❤️ Add to Wishlist</button>
+      </form>
+
+      <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+        <label>Weight</label>
+        <select name="weight">
+          {% for w in product.weights %}
+            <option value="{{ w }}">{{ w }}</option>
+          {% endfor %}
+        </select>
+
+        <div class="quantity">
+          <button type="button" class="minus">-</button>
+          <input type="number" name="qty" value="1" min="1">
+          <button type="button" class="plus">+</button>
+        </div>
+
+        <button type="submit" class="cart-btn">🛒 Add to Basket</button>
+      </form>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/women.jpg') }}" alt="Customer 1" width="120">
+        <p>"Fresh vegetables and pulses, really good quality. Delivery was on time!"</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- Priya Sharma & Kajal Kumari, Bihar</span>
+      </div>
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/man1.jpg') }}" alt="Customer 2" width="120">
+        <p>"Grains are chemical-free and directly from farmers. Highly recommended!"</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- Rajesh Kumar, Bihar</span>
+      </div>
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/man2.jpg') }}" alt="Customer 3" width="120">
+        <p>"The rice quality is excellent and packing is fresh. Loved the service."</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- Suraj Kumar, Bihar</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category }} Products - GrainWala{% endblock %}
+
+{% block content %}
+<style>
+.main-heading{
+    color:#27ae60;
+    text-align:center;
+    font-size:2.5rem;
+    font-weight:bold;
+    margin:32px 0 36px;
+}
+
+/* PRODUCT GRID */
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:22px;
+}
+
+/* CARD */
+.product-card{
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+    position:relative;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+.product-card img{
+    width:100%;
+    height:180px;
+    object-fit:contain;
+}
+
+.fresh-stock-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#27ae60;
+    color:#fff;
+    padding:4px 10px;
+    font-size:12px;
+    border-radius:4px;
+}
+
+.cart-btn{
+    width:100%;
+    margin-top:12px;
+    padding:10px;
+    background:#27ae60;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-weight:600;
+}
+.cart-btn:hover{ background:#1f9d55; }
+
+.quantity{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:10px;
+}
+.quantity input{
+    width:45px;
+    text-align:center;
+    margin:0 6px;
+}
+.quantity button{
+    padding:6px 12px;
+    border:none;
+    background:#eee;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* VIEW MORE BUTTON */
+.view-more-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin:50px 0 20px;
+}
+
+.btn-more{
+    padding:14px 42px;
+    background:#27ae60;
+    color:#fff;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:1.1rem;
+    font-weight:600;
+}
+.btn-more:hover{ background:#1f9d55; }
+</style>
+
+<div class="container">
+
+<h2 class="main-heading">{{ category }}</h2>
+
+<div class="product-grid">
+{% for product in products %}
+<div class="product-card">
+
+<img src="{{ url_for('static', filename='images/' + product.image[0]) if product.image else url_for('static', filename='images/default.png') }}" alt="{{ product.name }}">
+
+{% if product.stock_status %}
+<span class="fresh-stock-badge">{{ product.stock_status }}</span>
+{% endif %}
+
+<h3>{{ product.name }}</h3>
+<p class="price">₹{{ product.price_min }}</p>
+<p>{{ product.description }}</p>
+
+{% if session.get('user_id') %}
+<form action="{{ url_for('add_to_wishlist', product_id=product.id) }}" method="POST">
+    <button type="submit">❤️ Add to Wishlist</button>
+</form>
+{% endif %}
+
+{% if session.get('user_type') == 'farmer' and session.get('user_id') == product.farmer_id %}
+    <button class="cart-btn" style="background:#aaa;cursor:not-allowed;" disabled>
+        ❌ You cannot buy your own product
+    </button>
+{% else %}
+<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+{% if product.weights %}
+<label>Weight</label>
+<select name="weight">
+{% for w in product.weights %}
+<option value="{{ w }}">{{ w }}</option>
+{% endfor %}
+</select>
+{% endif %}
+
+<div class="quantity">
+<button type="button" class="minus">-</button>
+<input type="number" name="qty" value="1" min="1">
+<button type="button" class="plus">+</button>
+</div>
+
+<button type="submit" class="cart-btn">🛒 Add to Basket</button>
+</form>
+{% endif %}
+
+</div>
+{% endfor %}
+</div>
+
+<div class="view-more-wrapper">
+<a href="{{ url_for('products_page') }}" class="btn-more">View More Products →</a>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.quantity').forEach(qty=>{
+ const input=qty.querySelector('input');
+ qty.querySelector('.plus').onclick=()=>input.value=parseInt(input.value)+1;
+ qty.querySelector('.minus').onclick=()=>{
+  if(parseInt(input.value)>1) input.value=parseInt(input.value)-1;
+ };
+});
+</script>
+
+{% endblock %}

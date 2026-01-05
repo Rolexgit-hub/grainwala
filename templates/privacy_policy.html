@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy - GrainWala{% endblock %}
+{% block content %}
+<div class="ppage-wrapper">
+  <div class="ppage-main">
+    <div class="ppage-content-card">
+      <h1 class="ppage-title"><i class="fa fa-user-shield"></i> Privacy Policy</h1>
+      <p class="ppage-date">Effective Date: 24 October 2025</p>
+      <h2>Privacy Policy</h2>
+      <p>
+        The privacy of our visitors at <b>GrainWala</b> is very important to us. We want you to understand the type of information we collect, why we collect it, and how we use it. Please read this policy carefully.
+      </p>
+
+      <h3>Log File Data</h3>
+      <p>
+        Like many other websites, log files are stored on the web server saving details such as your IP address, browser type, referrer page, and time of visit. This information is never used to identify individual users and is only for analytics and security.
+      </p>
+
+      <h3>Cookies & Personal Data</h3>
+      <p>
+        Cookies are small files stored by your browser that allow your preferences to be remembered by the website. They help track site usage and improve your browsing experience. You can disable cookies in your browser anytime—but some site features may not work properly.
+      </p>
+      <ul>
+        <li>We don’t collect any personal data unless you supply it (sign-up/login, order placement etc.).</li>
+        <li>We never sell, rent, or use your information except for order fulfillment or website improvement.</li>
+        <li>We only share your information with our trusted partners (payments, delivery) or where required by law.</li>
+      </ul>
+
+      <h3>Your Rights</h3>
+      <ul>
+        <li>You have the right to view or correct your stored personal details any time from your account.</li>
+        <li>Contact us at <a href="mailto:support@grainwala.com">support@grainwala.com</a> to request deletion or for any privacy queries.</li>
+      </ul>
+      <h3>Data Security</h3>
+      <p>
+        We use strong encryption, SSL, and secure protocols to protect your information. Our security standards are regularly updated.
+      </p>
+      <h3>Policy Updates</h3>
+      <p>
+        This page will be updated whenever the policy changes. Please check regularly.
+      </p>
+    </div>
+  </div>
+  <aside class="ppage-sidebar">
+    <div class="ppage-cta-card">
+      <h2><i class="fa fa-newspaper"></i> Newsletter</h2>
+      <p>Get fresh offers and updates about GrainWala in your inbox.</p>
+    </div>
+    <form class="ppage-news-form" action="{{ url_for('subscribe_newsletter') }}" method="post">
+    <input type="email" name="newsletter_email" placeholder="Your email address" required>
+    <button type="submit">Subscribe</button>
+</form>
+
+    <div class="ppage-guide-card">
+      <h2>Quick Help</h2>
+      <ol>
+        <li><a href="{{ url_for('about') }}">How GrainWala Works</a></li>
+        <li><a href="{{ url_for('support') }}">Support & Help</a></li>
+        <li><a href="{{ url_for('account') }}">Manage Account</a></li>
+        <li><a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></li>
+      </ol>
+    </div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - GrainWala{% endblock %}
+
+{% block content %}
+<style>
+/* === Container & Layout === */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+/* === Chat Header === */
+.chat-header {
+    padding: 15px;
+    background-color: #27ae60;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* === Chat Messages === */
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fefefe;
+}
+
+.message {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.message.user {
+    background-color: #27ae60;
+    color: white;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background-color: #e6f9e6;
+    color: #333;
+    align-self: flex-start;
+}
+
+/* === Chat Input === */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.chat-input button:hover {
+    background-color: #219150;
+}
+
+/* Scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #27ae60;
+    border-radius: 3px;
+}
+</style>
+
+<div class="container">
+    <div class="chat-container">
+        <div class="chat-header">GrainWala Chat</div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+
+// Function to append messages
+function appendMessage(sender, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', sender);
+    msgDiv.textContent = text;
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Event listener
+sendBtn.addEventListener('click', () => {
+    const message = userInput.value.trim();
+    if(message === '') return;
+    appendMessage('user', message);
+    userInput.value = '';
+
+    // Simulate bot response
+    setTimeout(() => {
+        appendMessage('bot', "Thanks for your message!");
+    }, 500);
+});
+
+// Enter key functionality
+userInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') sendBtn.click();
+});
+</script>
+{% endblock %}

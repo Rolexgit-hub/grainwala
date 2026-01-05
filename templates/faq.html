@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}FAQ - GrainWala{% endblock %}
+{% block content %}
+<style>
+.faq-section-bg {
+    background: #e6f9e6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 10px 30px 10px;
+}
+.faq-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 38px rgba(34, 90, 139, 0.16);
+    max-width: 900px;
+    width: 100%;
+    padding: 0 0 32px 0;
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.faq-art {
+    background: linear-gradient(140deg, #ffdee2 0%, #78eaff 100%);
+    flex: 1 1 320px;
+    min-width: 340px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 42px 12px 0 12px;
+    position: relative;
+}
+.faq-art img {
+    width: 82%;
+    max-width: 330px;
+    margin-bottom: 10px;
+}
+.faq-list-wrap {
+    flex: 2 1 420px;
+    padding: 50px 30px 25px 30px;
+}
+.faq-title {
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: #175067;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+    margin-top: 0;
+}
+.faq-accordion {
+    width: 100%;
+}
+.faq-question {
+    background: #f4f8f7;
+    color: #20567a;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.08rem;
+    font-weight: 600;
+    padding: 18px 50px 18px 18px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: background 0.2s;
+    border: 2px solid #e4f3ff;
+}
+.faq-question.active {
+    background: #eaffee;
+    border-color: #28e67a;
+    color: #15874a;
+}
+.faq-question:after {
+    content: "+";
+    position: absolute;
+    right: 22px;
+    font-size: 1.6rem;
+    color: #38a169;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: 0.2s;
+}
+.faq-question.active:after {
+    content: "-";
+    color: #0d7755;
+    font-size: 2.1rem;
+}
+.faq-answer {
+    background: #fafdff;
+    border-radius: 0 0 10px 10px;
+    border-left: 3px solid #17daa8;
+    color: #164455;
+    padding: 18px 28px 18px 28px;
+    display: none;
+    margin-bottom: 7px;
+    margin-top: -5px;
+    font-size: 1rem;
+}
+.faq-question.active + .faq-answer {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@media (max-width: 900px) {
+    .faq-card { flex-direction: column; }
+    .faq-art, .faq-list-wrap { max-width: 100%; min-width: 60vw; }
+}
+@media (max-width: 540px) {
+    .faq-title { font-size: 1.3rem;}
+    .faq-list-wrap { padding: 25px 5px 12px 5px;}
+    .faq-art { padding: 22px 4px 0 4px;}
+}
+</style>
+
+<div class="faq-section-bg">
+    <div class="faq-card">
+        <div class="faq-art">
+            <img src="{{ url_for('static', filename='images/faq-illustration.jpg') }}" alt="FAQ Illustration">
+            <div style="font-size:2.6rem; font-weight:700; letter-spacing:0.01em; color:#f2679a; margin-bottom:10px;">FAQ</div>
+        </div>
+        <div class="faq-list-wrap">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <div class="faq-question">How do I track my order on GrainWala?</div>
+                <div class="faq-answer">You can track your order by clicking on the “Track Order” menu item and entering your Order ID associated with your purchase.</div>
+
+                <div class="faq-question">What payment methods are accepted?</div>
+                <div class="faq-answer">We accept secure online payments via UPI, credit/debit cards, net banking, and Cash on Delivery for eligible products and locations.</div>
+
+                <div class="faq-question">Can I cancel or modify my order?</div>
+                <div class="faq-answer">Yes, you can cancel or modify your order before it is shipped by contacting our customer support team as soon as possible.</div>
+
+                <div class="faq-question">How are refunds processed on GrainWala?</div>
+                <div class="faq-answer">Refunds are processed within 5–7 working days after we receive and confirm the return of your product to your original payment method.</div>
+
+                <div class="faq-question">How do I contact customer support?</div>
+                <div class="faq-answer">You can reach us by emailing <a href="mailto:support@grainwala.com">support@grainwala.com</a> or calling +91-8050797979.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.faq-question').forEach(function(q) {
+    q.addEventListener('click', function() {
+        // Collapse any open question
+        document.querySelectorAll('.faq-question.active').forEach(function(activeQ) {
+            if (activeQ !== q) activeQ.classList.remove('active');
+        });
+        // Toggle this one
+        q.classList.toggle('active');
+    });
+});
+</script>
+{% endblock %}

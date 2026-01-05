@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Wishlist - GrainWala{% endblock %}
+
+{% block content %}
+
+<style>
+/* ===== Wishlist Page Styling ===== */
+.wishlist-container {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    padding: 25px;
+}
+
+.wishlist-title {
+    color: #2e7d32;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Table */
+.wishlist-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.wishlist-table thead {
+    background: linear-gradient(135deg, #2e7d32, #43a047);
+    color: #fff;
+}
+
+.wishlist-table th {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 14px;
+    border: none;
+}
+
+.wishlist-table td {
+    vertical-align: middle;
+    padding: 14px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Product */
+.wishlist-product {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wishlist-product img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: transform 0.3s ease;
+}
+
+.wishlist-product img:hover {
+    transform: scale(1.08);
+}
+
+.wishlist-product-name {
+    font-weight: 600;
+    color: #222;
+}
+
+/* Price */
+.wishlist-price {
+    font-weight: 600;
+    color: #2e7d32;
+}
+
+/* Buttons */
+.wishlist-actions .btn {
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.wishlist-actions .btn-danger {
+    background: #e53935;
+    border: none;
+}
+
+.wishlist-actions .btn-danger:hover {
+    background: #c62828;
+    transform: translateY(-2px);
+}
+
+.wishlist-actions .btn-success {
+    background: #2e7d32;
+    border: none;
+}
+
+.wishlist-actions .btn-success:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+}
+
+/* Empty wishlist */
+.empty-wishlist {
+    background: #f9f9f9;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.04);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wishlist-table th,
+    .wishlist-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .wishlist-actions .btn {
+        margin-bottom: 6px;
+    }
+}
+</style>
+
+<div class="container my-5 wishlist-container">
+    <h2 class="mb-4 wishlist-title">My Wishlist</h2>
+
+    {% if wishlist %}
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle wishlist-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price Range</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in wishlist %}
+                <tr>
+                    <td>
+                        <div class="wishlist-product">
+                            {% set images = item[5] %}
+                            {% if images %}
+                                <img src="{{ url_for('static', filename='images/' + images[0]) }}" alt="{{ item[2] }}">
+                            {% endif %}
+                            <span class="wishlist-product-name">{{ item[2] }}</span>
+                        </div>
+                    </td>
+                    <td>{{ item[6] }}</td>
+                    <td class="wishlist-price">
+                        ₹{{ item[3] }}{% if item[4] != item[3] %} - ₹{{ item[4] }}{% endif %}
+                    </td>
+                    <td class="wishlist-actions">
+                        <form action="{{ url_for('remove_from_wishlist', wishlist_id=item[0]) }}" method="post" style="display:inline;">
+                            <button class="btn btn-danger btn-sm" type="submit">
+                                <i class="fa fa-trash"></i> Remove
+                            </button>
+                        </form>
+
+                        <form action="{{ url_for('add_to_cart', product_id=item[1]) }}" method="post" style="display:inline;">
+                            <input type="hidden" name="qty" value="1">
+                            <button class="btn btn-success btn-sm" type="submit">
+                                <i class="fa fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="text-center empty-wishlist">
+        <p>Your wishlist is empty.</p>
+        <a href="{{ url_for('products_page') }}" class="btn btn-success">
+            Browse Products
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

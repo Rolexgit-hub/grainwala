@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+{% set hide_footer = True %}
+{% block content %}
+<style>
+  body {
+    background: #e6f9e6;
+  }
+
+  .add-product-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .product-header {
+    background: linear-gradient(135deg, #007b5e 0%, #005f47 100%);
+    color: white;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .brand {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.9;
+  }
+
+  .form-container {
+    padding: 32px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .form-group label .required {
+    color: #c0152f;
+  }
+
+  .form-control {
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    transition: all 0.3s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #007b5e;
+    box-shadow: 0 0 0 3px rgba(0, 123, 94, 0.1);
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafafa;
+  }
+
+  .upload-area:hover {
+    border-color: #007b5e;
+    background: #f0f9f6;
+  }
+
+  .upload-area i {
+    font-size: 48px;
+    color: #007b5e;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .preview-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid rgba(94, 82, 64, 0.2);
+  }
+
+  .preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-item .remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #c0152f;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(94, 82, 64, 0.2);
+  }
+
+  .btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: #007b5e;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #006b50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 94, 0.3);
+  }
+
+  .btn-secondary {
+    background: rgba(94, 82, 64, 0.12);
+    color: #333;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(94, 82, 64, 0.2);
+  }
+</style>
+
+<div class="add-product-container">
+  <div class="product-header">
+    <h1><i class="fas fa-box-open"></i> Add New Product</h1>
+    <span class="brand">🌾 GrainWala</span>
+  </div>
+
+  <div class="form-container">
+    <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
+
+      <!-- Basic Info -->
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Product Name <span class="required">*</span></label>
+          <input type="text" class="form-control" name="product_name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Category <span class="required">*</span></label>
+          <select class="form-control" name="category" required>
+            <option value="">Select Category</option>
+            <option value="Grains & Pulses">Grains & Pulses</option>
+            <option value="Fresh Vegetables">Vegetables</option>
+            <option value="Fresh Fruits">Fruits</option>
+            <option value="Spices & Herbs">Spices</option>
+            <option value="Oil Seeds & Nuts">Oil Seeds</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Variety</label>
+          <input type="text" class="form-control" name="variety" />
+        </div>
+
+        <div class="form-group">
+          <label>Weight Options (comma separated) <span class="required">*</span></label>
+          <input type="text" class="form-control" name="weight_options" placeholder="Quintal, Dozen, Kg" />
+        </div>
+
+        <div class="form-group">
+          <label>Farmer Contact Number <span class="required">*</span></label>
+          <input type="tel" class="form-control" name="contact_number" placeholder="Enter your phone number" required pattern="[0-9]{10}" />
+        </div>
+      </div>
+
+      <!-- Quantity & Price -->
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Quantity (e.g., 100) <span class="required">*</span></label>
+          <input type="number" class="form-control" name="quantity" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>Stock Quality <span class="required">*</span></label>
+          <select class="form-control" name="stock_status" required>
+            <option value="">Select Stock Quality</option>
+            <option value="Fresh">Fresh</option>
+            <option value="Premium">Premium</option>
+            <option value="Standard">Standard</option>
+            <option value="Organic">Organic</option>
+            <option value="Seasonal">Seasonal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Price Per Unit (₹) <span class="required">*</span></label>
+          <input type="number" class="form-control" name="price_per_unit" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>Negotiable</label>
+          <select class="form-control" name="negotiable">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Location & Delivery -->
+      <div class="form-group">
+        <label>Location <span class="required">*</span></label>
+        <select class="form-control" name="location" required>
+          <option value="">Select District</option>
+          <option value="Araria">Araria</option>
+          <option value="Arwal">Arwal</option>
+          <option value="Aurangabad">Aurangabad</option>
+          <option value="Banka">Banka</option>
+          <option value="Begusarai">Begusarai</option>
+          <option value="Bhagalpur">Bhagalpur</option>
+          <option value="Bhojpur">Bhojpur</option>
+          <option value="Buxar">Buxar</option>
+          <option value="Darbhanga">Darbhanga</option>
+          <option value="East Champaran">East Champaran</option>
+          <option value="Gaya">Gaya</option>
+          <option value="Gopalganj">Gopalganj</option>
+          <option value="Jamui">Jamui</option>
+          <option value="Jehanabad">Jehanabad</option>
+          <option value="Kaimur">Kaimur</option>
+          <option value="Katihar">Katihar</option>
+          <option value="Khagaria">Khagaria</option>
+          <option value="Kishanganj">Kishanganj</option>
+          <option value="Lakhisarai">Lakhisarai</option>
+          <option value="Madhepura">Madhepura</option>
+          <option value="Madhubani">Madhubani</option>
+          <option value="Munger">Munger</option>
+          <option value="Muzaffarpur">Muzaffarpur</option>
+          <option value="Nalanda">Nalanda</option>
+          <option value="Nawada">Nawada</option>
+          <option value="Patna">Patna</option>
+          <option value="Purnia">Purnia</option>
+          <option value="Rohtas">Rohtas</option>
+          <option value="Saharsa">Saharsa</option>
+          <option value="Samastipur">Samastipur</option>
+          <option value="Saran">Saran</option>
+          <option value="Sheikhpura">Sheikhpura</option>
+          <option value="Sheohar">Sheohar</option>
+          <option value="Sitamarhi">Sitamarhi</option>
+          <option value="Siwan">Siwan</option>
+          <option value="Supaul">Supaul</option>
+          <option value="Vaishali">Vaishali</option>
+          <option value="West Champaran">West Champaran</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Available</label>
+        <select class="form-control" name="delivery_available">
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Harvest Date</label>
+        <input type="date" class="form-control" name="harvest_date" />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group full-width">
+        <label>Product Description</label>
+        <textarea class="form-control" name="description" placeholder="Describe your product quality, condition, etc."></textarea>
+      </div>
+
+      <!-- Multiple Image Upload -->
+      <div class="form-group full-width">
+        <label>Upload Product Images <span class="required">*</span></label>
+        <div class="upload-area" onclick="document.getElementById('productImages').click();">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p><strong>Click to upload</strong> or drag and drop multiple images</p>
+          <input type="file" id="productImages" name="images" multiple accept="image/*" onchange="handleImageUpload(event)" required />
+        </div>
+        <div id="imagePreview" class="preview-images"></div>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('farmer_dashboard') }}" class="btn btn-secondary">
+          <i class="fas fa-times"></i> Cancel
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-check"></i> Add Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function handleImageUpload(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = '';
+
+    for (let file of files) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`${file.name} exceeds 5MB limit`);
+        continue;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'preview-item';
+        previewItem.innerHTML = `
+          <img src="${e.target.result}" alt="Preview" />
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove();">
+            ✖
+          </button>
+        `;
+        previewContainer.appendChild(previewItem);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
+{% endblock %}

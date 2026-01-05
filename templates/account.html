@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% block title %}GrainWala | Account{% endblock %}
+{% set hide_footer = True %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+
+<div class="container">
+    <h1>Account</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showForm('consumer', event)">Consumer</button>
+        <button class="tab-btn" onclick="showForm('farmer', event)">Farmer</button>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- ================= CONSUMER ================= -->
+    <div id="consumer" class="form-section active">
+
+        <!-- CONSUMER LOGIN -->
+        <form class="form active" id="consumer-login" action="{{ url_for('login') }}" method="post">
+            <h2>Consumer Login</h2>
+
+            <input type="text" name="phone" placeholder="Phone Number"
+                   required pattern="[0-9]{10}">
+
+            <input type="password" name="password" placeholder="Password"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="consumer">
+            <button type="submit">Login</button>
+
+            <p>New user?
+                <a href="#" onclick="switchForm('consumer','register',event)">Register</a>
+            </p>
+            <p>
+  <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+</p>
+
+        </form>
+
+        <!-- CONSUMER REGISTER -->
+        <form class="form" id="consumer-register" action="{{ url_for('register') }}" method="post">
+            <h2>Consumer Register</h2>
+
+            <input type="text" name="username" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+
+            <input type="text" name="phone" placeholder="Phone Number"
+                   required pattern="[0-9]{10}">
+
+            <input type="text" name="address" placeholder="Full Address" required>
+
+            <select name="district" required>
+                <option value="">Select District</option>
+                <option>Araria</option>
+                <option>Arwal</option>
+                <option>Aurangabad</option>
+                <option>Banka</option>
+                <option>Begusarai</option>
+                <option>Bhagalpur</option>
+                <option>Bhojpur</option>
+                <option>Buxar</option>
+                <option>Darbhanga</option>
+                <option>East Champaran (Motihari)</option>
+                <option>Gaya</option>
+                <option>Gopalganj</option>
+                <option>Jamui</option>
+                <option>Jehanabad</option>
+                <option>Kaimur (Bhabua)</option>
+                <option>Katihar</option>
+                <option>Khagaria</option>
+                <option>Kishanganj</option>
+                <option>Lakhisarai</option>
+                <option>Madhepura</option>
+                <option>Madhubani</option>
+                <option>Munger</option>
+                <option>Muzaffarpur</option>
+                <option>Nalanda</option>
+                <option>Nawada</option>
+                <option>Patna</option>
+                <option>Purnia</option>
+                <option>Rohtas</option>
+                <option>Saharsa</option>
+                <option>Samastipur</option>
+                <option>Saran (Chapra)</option>
+                <option>Sheikhpura</option>
+                <option>Sheohar</option>
+                <option>Sitamarhi</option>
+                <option>Siwan</option>
+                <option>Supaul</option>
+                <option>Vaishali</option>
+                <option>West Champaran (Bettiah)</option>
+            </select>
+
+            <input type="text" name="state" value="Bihar" readonly>
+            <input type="text" name="pincode" placeholder="Enter Pincode" required>
+
+            <input type="password" name="password" placeholder="Password"
+                   required minlength="6">
+            <input type="password" name="confirm_password" placeholder="Confirm Password"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="consumer">
+            <button type="submit">Register</button>
+
+            <p>Already have an account?
+                <a href="#" onclick="switchForm('consumer','login',event)">Login</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- ================= FARMER ================= -->
+    <div id="farmer" class="form-section">
+
+        <!-- FARMER LOGIN -->
+        <form class="form active" id="farmer-login" action="{{ url_for('login') }}" method="post">
+            <h2>Farmer Login</h2>
+
+            <input type="text" name="phone" placeholder="Phone Number"
+                   required pattern="[0-9]{10}">
+
+            <input type="password" name="password" placeholder="Password"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="farmer">
+            <button type="submit">Login</button>
+
+            <p>New user?
+                <a href="#" onclick="switchForm('farmer','register',event)">Register</a>
+            </p>
+
+            <p>
+  <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+</p>
+
+        </form>
+
+        <!-- FARMER REGISTER -->
+        <form class="form" id="farmer-register" action="{{ url_for('register') }}" method="post">
+            <h2>Farmer Register</h2>
+
+            <input type="text" name="username" placeholder="Farm / Shop Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+
+            <input type="text" name="phone" placeholder="Phone Number"
+                   required pattern="[0-9]{10}">
+
+            <input type="text" name="location" placeholder="Full Address" required>
+
+            <select name="district" required>
+                <option value="">Select District</option>
+                <option>Araria</option>
+                <option>Arwal</option>
+                <option>Aurangabad</option>
+                <option>Banka</option>
+                <option>Begusarai</option>
+                <option>Bhagalpur</option>
+                <option>Bhojpur</option>
+                <option>Buxar</option>
+                <option>Darbhanga</option>
+                <option>East Champaran (Motihari)</option>
+                <option>Gaya</option>
+                <option>Gopalganj</option>
+                <option>Jamui</option>
+                <option>Jehanabad</option>
+                <option>Kaimur (Bhabua)</option>
+                <option>Katihar</option>
+                <option>Khagaria</option>
+                <option>Kishanganj</option>
+                <option>Lakhisarai</option>
+                <option>Madhepura</option>
+                <option>Madhubani</option>
+                <option>Munger</option>
+                <option>Muzaffarpur</option>
+                <option>Nalanda</option>
+                <option>Nawada</option>
+                <option>Patna</option>
+                <option>Purnia</option>
+                <option>Rohtas</option>
+                <option>Saharsa</option>
+                <option>Samastipur</option>
+                <option>Saran (Chapra)</option>
+                <option>Sheikhpura</option>
+                <option>Sheohar</option>
+                <option>Sitamarhi</option>
+                <option>Siwan</option>
+                <option>Supaul</option>
+                <option>Vaishali</option>
+                <option>West Champaran (Bettiah)</option>
+            </select>
+
+            <input type="text" name="state" value="Bihar" readonly>
+            <input type="text" name="pincode" placeholder="Enter Pincode" required>
+
+            <input type="text" name="crop_type" placeholder="Crop Type" required>
+            <input type="text" name="payment_details" placeholder="UPI / Bank Details" required>
+
+            <input type="password" name="password" placeholder="Password"
+                   required minlength="6">
+            <input type="password" name="confirm_password" placeholder="Confirm Password"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="farmer">
+            <button type="submit">Register</button>
+
+            <p>Already have an account?
+                <a href="#" onclick="switchForm('farmer','login',event)">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+function showForm(type, event) {
+    document.querySelectorAll(".form-section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById(type).classList.add("active");
+    event.target.classList.add("active");
+}
+
+function switchForm(userType, formType, event) {
+    event.preventDefault();
+    document.querySelectorAll(`#${userType} .form`).forEach(f => f.classList.remove("active"));
+    document.getElementById(`${userType}-${formType}`).classList.add("active");
+}
+</script>
+
+{% endblock %}

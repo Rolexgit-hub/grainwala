@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Return & Refund Policy - GrainWala{% endblock %}
+{% block content %}
+<style>
+    .gw-policy-container {
+        max-width: 730px;
+        margin: 60px auto 50px auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(34,139,67,0.09), 0 0.5px 2px rgba(0,0,0,0.07);
+        padding: 46px 42px 36px 42px;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        letter-spacing: 0.01em;
+    }
+    .gw-policy-flex {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 32px;
+        gap: 26px;
+    }
+    .gw-policy-img {
+        width: 155px;
+        min-width: 120px;
+        border-radius: 18px;
+        border: 2.5px solid #dbffd6;
+        box-shadow: 0 3px 18px rgba(34,139,67,0.07);
+        margin:0;
+    }
+    .gw-policy-title {
+        color: #0F7851;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 2px;
+    }
+    .gw-policy-lead {
+        font-size: 1.19rem;
+        color: #32764F;
+        margin-bottom: 2px;
+        margin-top: 0;
+        font-weight: 500;
+    }
+    .gw-policy-section {
+        margin-bottom: 30px;
+    }
+    .gw-policy-section h2 {
+        color: #21A559;
+        font-weight: 700;
+        margin-bottom: 7px;
+        margin-top: 10px;
+        font-size: 1.27rem;
+        border-left: 4px solid #b6f7c6;
+        padding-left: 14px;
+        line-height: 1.2;
+    }
+    .gw-policy-container p, .gw-policy-container li {
+        color: #313a20;
+        font-size: 1.08rem;
+        line-height: 1.8;
+    }
+    .gw-policy-container ol {
+        margin-left: 1.5em;
+    }
+    .gw-policy-container a {
+        color: #00943e;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+    @media (max-width: 700px) {
+        .gw-policy-container { padding: 18px 6px 16px 6px; }
+        .gw-policy-flex { flex-direction: column; align-items: flex-start; }
+        .gw-policy-title { font-size: 2.1rem; }
+        .gw-policy-img { width: 95px; }
+    }
+    @media (max-width: 460px) {
+        .gw-policy-title { font-size: 1.5rem;}
+        .gw-policy-img { width: 70px; }
+    }
+</style>
+
+<div class="gw-policy-container">
+    <div class="gw-policy-flex">
+        <img src="{{ url_for('static', filename='images/return-refund.jpg') }}" class="gw-policy-img" alt="Return and Refund Illustration">
+        <div>
+            <div class="gw-policy-title">Return & Refund Policy</div>
+            <p class="gw-policy-lead">Shop with confidence at GrainWala! Our policies are transparent, hassle-free,<br>and designed to give you the best experience possible.</p>
+        </div>
+    </div>
+
+    <hr style="border: none; border-top: 1.5px solid #eef3ea; margin: 16px 0 30px 0;">
+
+    <div class="gw-policy-section">
+        <h2>Returns</h2>
+        <p>
+            If you are not fully satisfied with your purchase, you can request a return within <b>7 days</b> of receiving the item.<br>
+            Products must be unused, in original packaging, and include all accessories, labels, and bills for a successful return.
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>Refunds</h2>
+        <p>
+            After we receive and inspect your returned item, your refund will be processed within <b>5-7 business days</b>.<br>
+            Refunds will be credited to your original payment method. In case of partial returns, only the value of the returned item will be refunded, excluding any shipping charges, if applicable.
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>Exchanges</h2>
+        <p>
+            To exchange an item, contact our support team within 7 days of delivery. Items for exchange must meet the return conditions described above.
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>Return Process</h2>
+        <ol>
+            <li>Email us at <a href="mailto:support@grainwala.com">support@grainwala.com</a> with your order ID and reason for return.</li>
+            <li>Our team will review your request and share the return shipping details.</li>
+            <li>Carefully pack the product and send it to the provided address.</li>
+            <li>After inspection, your refund/exchange will be initiated as per policy.</li>
+        </ol>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>Exceptions & Non-Returnable Items</h2>
+        <p>
+            Certain goods are exempt from being returned, including perishable products (fresh fruits, vegetables), items marked non-returnable, or products used/damaged after delivery.
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>Need help?</h2>
+        <p>
+            Contact us at <a href="mailto:support@grainwala.com">support@grainwala.com</a> or call +91-XXXXXX1234 for questions related to refunds and returns.
+        </p>
+    </div>
+</div>
+{% endblock %}

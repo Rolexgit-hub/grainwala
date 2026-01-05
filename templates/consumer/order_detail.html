@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.order_id }}{% endblock %}
+
+{% block content %}
+<style>
+/* Container styling */
+.order-detail-container {
+  max-width: 900px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Header */
+.order-detail-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #28a745;
+  font-weight: 600;
+}
+
+/* Order Info */
+.order-info {
+  margin-bottom: 25px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.order-info div {
+  margin-bottom: 8px;
+}
+
+/* Items Table */
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+}
+.items-table th, .items-table td {
+  border: 1px solid #eee;
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+.items-table th {
+  background: #f9f9f9;
+  color: #333;
+  font-weight: 600;
+}
+.items-table td {
+  font-size: 14px;
+}
+
+/* Feedback Form */
+.feedback-form {
+  background: #fdfdfd;
+  padding: 8px;
+  border-radius: 8px;
+}
+.feedback-form textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.feedback-form button {
+  margin-top: 5px;
+}
+
+/* Star Rating */
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+.rating input {
+  display: none;
+}
+.rating label {
+  font-size: 20px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #ffc107;
+}
+
+/* Back Link */
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #28a745;
+  font-weight: 500;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media(max-width:768px) {
+  .order-detail-container {
+    padding: 20px;
+  }
+  .items-table th, .items-table td {
+    font-size: 13px;
+    padding: 8px 6px;
+  }
+}
+</style>
+
+<div class="order-detail-container">
+  <h2>Order Details</h2>
+
+  <!-- Order Information -->
+  <div class="order-info">
+    <div><strong>Order ID:</strong> {{ order.order_id }}</div>
+    <div><strong>Status:</strong> {{ order.status }}</div>
+    <div><strong>Total Amount:</strong> ₹{{ order.total_amount }}</div>
+{{ order.created_at }}
+<div>
+  <strong>Delivery Address:</strong><br>
+  {{ order.full_name }} - {{ order.phone }}<br>
+  {{ order.address }}
+</div>
+  </div>
+
+  <!-- Items Table -->
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+        <th>Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+      <tr>
+        <td>{{ item.product_name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>₹{{ item.price }}</td>
+        <td>₹{{ item.price * item.quantity }}</td>
+        <td>
+          {% if session.get('user_type') == 'consumer' %}
+          <form action="{{ url_for('add_feedback') }}" method="POST" class="feedback-form">
+            <input type="hidden" name="order_id" value="{{ order.order_id }}">
+            <input type="hidden" name="product_id" value="{{ item.product_id }}">
+
+            <div class="rating">
+              <input type="radio" name="rating_{{ item.product_id }}" id="rate5-{{ item.product_id }}" value="5" required>
+              <label for="rate5-{{ item.product_id }}">★</label>
+
+              <input type="radio" name="rating_{{ item.product_id }}" id="rate4-{{ item.product_id }}" value="4">
+              <label for="rate4-{{ item.product_id }}">★</label>
+
+              <input type="radio" name="rating_{{ item.product_id }}" id="rate3-{{ item.product_id }}" value="3">
+              <label for="rate3-{{ item.product_id }}">★</label>
+
+              <input type="radio" name="rating_{{ item.product_id }}" id="rate2-{{ item.product_id }}" value="2">
+              <label for="rate2-{{ item.product_id }}">★</label>
+
+              <input type="radio" name="rating_{{ item.product_id }}" id="rate1-{{ item.product_id }}" value="1">
+              <label for="rate1-{{ item.product_id }}">★</label>
+            </div>
+
+            <textarea name="comment" rows="2" placeholder="Write your feedback..." required></textarea>
+            <button type="submit" class="btn btn-success btn-sm">Submit</button>
+          </form>
+          {% else %}
+            <small>Login as consumer to give feedback</small>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ url_for('consumer_orders') }}" class="back-link">← Back to Orders</a>
+</div>
+{% endblock %}

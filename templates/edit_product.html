@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Edit Product - Farmer Panel{% endblock %}
+{% set hide_footer = True %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+    body {
+    background-color: #e6f9e6;
+}
+</style>
+<div class="container my-5">
+    <h2 class="fw-bold text-success mb-4"><i class="bi bi-pencil-square"></i> Edit Product</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" name="product_name" value="{{ product.name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" name="category" required>
+                <option value="Grains & Pulses" {% if product.category=='Grains & Pulses' %}selected{% endif %}>Grains & Pulses</option>
+                <option value="Fresh Vegetables" {% if product.category=='Fresh Vegetables' %}selected{% endif %}>Fresh Vegetables</option>
+                <option value="Fresh Fruits" {% if product.category=='Fresh Fruits' %}selected{% endif %}>Fresh Fruits</option>
+                <option value="Spices & Herbs" {% if product.category=='Spices & Herbs' %}selected{% endif %}>Spices & Herbs</option>
+                <option value="Oil Seeds & Nuts" {% if product.category=='Oil Seeds & Nuts' %}selected{% endif %}>Oil Seeds & Nuts</option>
+                <option value="Other" {% if product.category=='Other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Price per unit (₹)</label>
+            <input type="number" class="form-control" name="price_per_unit" value="{{ product.price_min }}" min="0" step="0.01" required>
+        </div>
+
+       <div class="mb-3">
+    <label class="form-label">Stock Quality <span class="required">*</span></label>
+    <select class="form-select" name="stock_status" required>
+        <option value="">Select Stock Quality</option>
+        <option value="Fresh" {% if product.stock_status=='Fresh' %}selected{% endif %}>Fresh</option>
+        <option value="Premium" {% if product.stock_status=='Premium' %}selected{% endif %}>Premium</option>
+        <option value="Standard" {% if product.stock_status=='Standard' %}selected{% endif %}>Standard</option>
+        <option value="Organic" {% if product.stock_status=='Organic' %}selected{% endif %}>Organic</option>
+        <option value="Seasonal" {% if product.stock_status=='Seasonal' %}selected{% endif %}>Seasonal</option>
+    </select>
+</div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" name="quantity" value="{{ product.quantity or 0 }}" min="0">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contact Number</label>
+            <input type="text" class="form-control" name="contact_number" value="{{ product.contact_number }}">
+        </div>
+
+      <div class="mb-3">
+    <label class="form-label">Location <span class="required">*</span></label>
+    <select class="form-select" name="location" required>
+        <option value="">Select District</option>
+        <option value="Araria" {% if product.location=='Araria' %}selected{% endif %}>Araria</option>
+        <option value="Arwal" {% if product.location=='Arwal' %}selected{% endif %}>Arwal</option>
+        <option value="Aurangabad" {% if product.location=='Aurangabad' %}selected{% endif %}>Aurangabad</option>
+        <option value="Banka" {% if product.location=='Banka' %}selected{% endif %}>Banka</option>
+        <option value="Begusarai" {% if product.location=='Begusarai' %}selected{% endif %}>Begusarai</option>
+        <option value="Bhagalpur" {% if product.location=='Bhagalpur' %}selected{% endif %}>Bhagalpur</option>
+        <option value="Bhojpur" {% if product.location=='Bhojpur' %}selected{% endif %}>Bhojpur</option>
+        <option value="Buxar" {% if product.location=='Buxar' %}selected{% endif %}>Buxar</option>
+        <option value="Darbhanga" {% if product.location=='Darbhanga' %}selected{% endif %}>Darbhanga</option>
+        <option value="East Champaran" {% if product.location=='East Champaran' %}selected{% endif %}>East Champaran</option>
+        <option value="Gaya" {% if product.location=='Gaya' %}selected{% endif %}>Gaya</option>
+        <option value="Gopalganj" {% if product.location=='Gopalganj' %}selected{% endif %}>Gopalganj</option>
+        <option value="Jamui" {% if product.location=='Jamui' %}selected{% endif %}>Jamui</option>
+        <option value="Jehanabad" {% if product.location=='Jehanabad' %}selected{% endif %}>Jehanabad</option>
+        <option value="Kaimur" {% if product.location=='Kaimur' %}selected{% endif %}>Kaimur</option>
+        <option value="Katihar" {% if product.location=='Katihar' %}selected{% endif %}>Katihar</option>
+        <option value="Khagaria" {% if product.location=='Khagaria' %}selected{% endif %}>Khagaria</option>
+        <option value="Kishanganj" {% if product.location=='Kishanganj' %}selected{% endif %}>Kishanganj</option>
+        <option value="Lakhisarai" {% if product.location=='Lakhisarai' %}selected{% endif %}>Lakhisarai</option>
+        <option value="Madhepura" {% if product.location=='Madhepura' %}selected{% endif %}>Madhepura</option>
+        <option value="Madhubani" {% if product.location=='Madhubani' %}selected{% endif %}>Madhubani</option>
+        <option value="Munger" {% if product.location=='Munger' %}selected{% endif %}>Munger</option>
+        <option value="Muzaffarpur" {% if product.location=='Muzaffarpur' %}selected{% endif %}>Muzaffarpur</option>
+        <option value="Nalanda" {% if product.location=='Nalanda' %}selected{% endif %}>Nalanda</option>
+        <option value="Nawada" {% if product.location=='Nawada' %}selected{% endif %}>Nawada</option>
+        <option value="Patna" {% if product.location=='Patna' %}selected{% endif %}>Patna</option>
+        <option value="Purnia" {% if product.location=='Purnia' %}selected{% endif %}>Purnia</option>
+        <option value="Rohtas" {% if product.location=='Rohtas' %}selected{% endif %}>Rohtas</option>
+        <option value="Saharsa" {% if product.location=='Saharsa' %}selected{% endif %}>Saharsa</option>
+        <option value="Samastipur" {% if product.location=='Samastipur' %}selected{% endif %}>Samastipur</option>
+        <option value="Saran" {% if product.location=='Saran' %}selected{% endif %}>Saran</option>
+        <option value="Sheikhpura" {% if product.location=='Sheikhpura' %}selected{% endif %}>Sheikhpura</option>
+        <option value="Sheohar" {% if product.location=='Sheohar' %}selected{% endif %}>Sheohar</option>
+        <option value="Sitamarhi" {% if product.location=='Sitamarhi' %}selected{% endif %}>Sitamarhi</option>
+        <option value="Siwan" {% if product.location=='Siwan' %}selected{% endif %}>Siwan</option>
+        <option value="Supaul" {% if product.location=='Supaul' %}selected{% endif %}>Supaul</option>
+        <option value="Vaishali" {% if product.location=='Vaishali' %}selected{% endif %}>Vaishali</option>
+        <option value="West Champaran" {% if product.location=='West Champaran' %}selected{% endif %}>West Champaran</option>
+    </select>
+</div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Variety</label>
+            <input type="text" class="form-control" name="variety" value="{{ product.variety or '' }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Negotiable</label>
+            <select class="form-select" name="negotiable">
+                <option value="1" {% if product.negotiable %}selected{% endif %}>Yes</option>
+                <option value="0" {% if not product.negotiable %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Delivery Available</label>
+            <select class="form-select" name="delivery_available">
+                <option value="1" {% if product.delivery_available %}selected{% endif %}>Yes</option>
+                <option value="0" {% if not product.delivery_available %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Harvest Date</label>
+            <input type="date" class="form-control" name="harvest_date" value="{{ product.harvest_date|default('') }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Weights (comma separated)</label>
+            <input type="text" class="form-control" name="weight_options" value="{{ product.weights | join(', ') }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="4">{{ product.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Existing Images</label>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                {% for img in product.image %}
+                    <img src="{{ url_for('static', filename='images/' ~ img) }}" class="img-thumbnail" style="width:100px; height:100px; object-fit:cover;">
+                {% endfor %}
+            </div>
+            <label class="form-label">Add New Images</label>
+            <input type="file" class="form-control" name="images" multiple accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Update Product</button>
+        <a href="{{ url_for('farmer_manage_products') }}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left"></i> Back</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

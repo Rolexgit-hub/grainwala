@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Your Cart - GrainWala{% endblock %}
+{% block content %}
+
+<div class="container" style="max-width: 800px; margin: 40px auto;">
+    <h2 style="color:#27ae60; text-align:center; margin-bottom:25px;">🛒 Your Cart</h2>
+
+    {% if cart_items %}
+    <table style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr style="background:#f5f5f5; text-align:left;">
+                <th style="padding:10px;">Product</th>
+                <th style="padding:10px;">Qty</th>
+                <th style="padding:10px;">Price</th>
+                <th style="padding:10px;">Subtotal</th>
+                <th style="padding:10px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td style="padding:10px; display:flex; align-items:center;">
+<img src="{{ url_for('static', filename='images/' ~ (item.image if item.image else 'default.png')) }}" width="50" style="margin-right:10px;">
+                    {{ item.name }} {% if item.weight %}({{ item.weight }}){% endif %}
+                </td>
+                <td style="padding:10px;">
+                    <form action="{{ url_for('update_cart') }}" method="POST" style="display:inline-flex;">
+                        <input type="hidden" name="key" value="{{ item.key }}">
+                        <input type="number" name="qty" value="{{ item.qty }}" min="1" style="width:60px; text-align:center;">
+                        <button type="submit" style="margin-left:6px; background:#27ae60; color:#fff; border:none; padding:4px 8px; cursor:pointer;">Update</button>
+                    </form>
+                </td>
+                <td style="padding:10px;">₹{{ item.price }}</td>
+                <td style="padding:10px;">₹{{ item.subtotal }}</td>
+                <td style="padding:10px;">
+                    <a href="{{ url_for('remove_from_cart', key=item.key) }}" style="color:red;">✕</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top:20px; text-align:right;">
+        <h3>Total: ₹{{ total_price }}</h3>
+       <form action="{{ url_for('checkout') }}" method="GET">
+  <button type="submit" class="btn btn-success">Place Order</button>
+</form>
+
+
+    </div>
+    {% else %}
+    <div class="cart-card" style="text-align:center;">
+        <p>Your cart is empty 🛍</p>
+        <a href="{{ url_for('products_page') }}" class="continue-btn" style="background:#27ae60;color:#fff;padding:10px 20px;display:inline-block;margin-top:10px;">← Continue Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}GrainWala{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="alert-container">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/GrainWala.png') }}" width="150" alt="GrainWala Logo" />
+      </div>
+      <div class="navbar">
+        <form class="search-container" action="{{ url_for('search') }}" method="GET">
+  <input type="text" name="query" placeholder="Search directly from farmers to your home" required />
+  <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+</form>
+
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('index') }}" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li class="dropdown">
+<a href="javascript:void(0);" class="nav-link">
+  <i class="fa-solid fa-box-open"></i> Products 
+  <i class="fa-solid fa-angle-down"></i>
+</a>
+
+              <div class="dropdown-content">
+  <a href="{{ url_for('category_products', cat_name='grains-pulses') }}">🌾 Grains & Pulses</a>
+  <a href="{{ url_for('category_products', cat_name='vegetables') }}">🥬 Fresh Vegetables</a>
+  <a href="{{ url_for('category_products', cat_name='fruits') }}">🍎 Fresh Fruits</a>
+  <a href="{{ url_for('category_products', cat_name='spices-herbs') }}">🌶 Spices & Herbs</a>
+  <a href="{{ url_for('category_products', cat_name='oil-seeds') }}">🌰 Oil Seeds & Nuts</a>
+  <a href="{{ url_for('category_products', cat_name='other') }}">🍯 Other </a>
+</div>
+
+            </li>
+            <li><a href="{{ url_for('about') }}" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+            <li><a href="{{ url_for('track_order') }}" class="nav-link"><i class="fa-solid fa-truck"></i> Track Order</a></li>
+            <li class="dropdown" style="position:relative;">
+              {% if session.get('user_id') %}
+                <a href="#" class="nav-link">
+                  <!-- 🔹 Short Name show -->
+                  <i class="fa-solid fa-user"></i> {{ initials }} <i class="fa-solid fa-angle-down"></i>
+                </a>
+                <div class="dropdown-content profile-dropdown">
+                  {% if session['user_type'] == 'consumer' %}
+                    <span style="color: #007b5e; font-weight: bold;">Consumer Panel</span>
+                    <a href="{{ url_for('consumer_dashboard') }}">My Profile</a>
+                    <a href="{{ url_for('consumer_orders') }}">Orders</a>
+                    <a href="{{ url_for('support') }}">Support & Help</a>
+                    <a href="{{ url_for('wishlist') }}">Wishlist</a>
+                  {% elif session['user_type'] == 'farmer' %}
+                    <span style="color: #007b5e; font-weight: bold;">Farmer Panel</span>
+                    <a href="{{ url_for('farmer_dashboard') }}">My Profile</a>
+                                        <a href="{{ url_for('wishlist') }}">Wishlist</a>
+
+                    <a href="{{ url_for('farmer_manage_products') }}">Manage Products</a>
+<a href="{{ url_for('farmer_feedback') }}">Feedback / Reviews</a>
+                     <a href="{{ url_for('add_product') }}">Add Product</a>
+                    <a href="{{ url_for('farmer_orders') }}">Orders Received</a>
+                  {% endif %}
+                  <hr>
+                  <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+              {% else %}
+                <a href="{{ url_for('account') }}" class="nav-link"><i class="fa-solid fa-user"></i> Account</a>
+              {% endif %}
+            </li>
+            <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  {% if hide_footer is not defined or not hide_footer %}
+  <!-- Footer -->
+  <footer style="background:#1b2d1b; color:#d9d9d9; padding:40px 20px; font-family:Arial, sans-serif;">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; max-width:1200px; margin:auto;">
+      <div style="flex:1 1 300px; margin:10px;">
+        <h2 style="color:#7CFC00;">GrainWala</h2>
+        <p style="line-height:1.6; font-size:14px;">
+          GrainWala is a trusted platform dedicated to bringing you fresh grains, pulses, fruits, vegetables, and organic products directly from farmers. 
+          Our mission is to make chemical-free, natural, and high-quality food accessible to every household while ensuring farmers receive fair and transparent prices for their produce. 
+          By connecting consumers with farmers, GrainWala promotes healthier lifestyles and supports sustainable agriculture.
+        </p>
+      </div>
+
+      <div style="flex:1 1 200px; margin:10px;">
+        <h3 style="color:#7CFC00; margin-bottom:10px;">Quick Links</h3>
+        <ul style="list-style:none; padding:0; line-height:2;">
+          <li><a href="{{ url_for('about') }}" style="color:#d9d9d9; text-decoration:none;">About Us</a></li>
+          <li><a href="{{ url_for('products_page') }}" style="color:#d9d9d9; text-decoration:none;">Our Products</a></li>
+         <li><a href="{{ url_for('privacy_policy') }}" style="color:#d9d9d9; text-decoration:none;">Privacy Policy</a></li>
+
+          <li><a href="{{ url_for('return_policy') }}" style="color:#d9d9d9; text-decoration:none;">Return & Refund</a></li>
+
+          <li><a href="{{ url_for('faq') }}" style="color:#d9d9d9; text-decoration:none;">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div style="flex:1 1 250px; margin:10px;">
+        <h3 style="color:#7CFC00; margin-bottom:10px;">Contact Us</h3>
+        <p>📞 Call: <a href="tel:+918050797979" style="color:orange; font-weight:bold;">+91 8050797979</a></p>
+        <p>📩 Email: <a href="mailto:support@grainwala.com" style="color:orange; font-weight:bold;">support@grainwala.com</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> Patna, Bihar, India</p>
+        <div style="margin-top:15px;">
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="28" style="margin-right:10px;" /></a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:30px; border-top:1px solid #444; padding-top:15px; font-size:13px;">
+      © 2025 GrainWala. All Rights Reserved.
+    </div>
+  </footer>
+  {% endif %}
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

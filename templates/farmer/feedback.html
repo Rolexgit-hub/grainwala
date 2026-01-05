@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Product Feedback{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-success mb-4">📋 Product Feedback</h2>
+
+  {% if feedbacks %}
+  <div class="list-group">
+    {% for fb in feedbacks %}
+      <div class="list-group-item mb-2 shadow-sm">
+        <strong>{{ fb.consumer_name }}</strong> rated 
+        <strong>{{ fb.product_name }}</strong> 
+        <span class="text-warning">★{{ fb.rating }}</span> 
+        <div class="text-muted small">{{ fb.created_at.strftime('%d %b %Y %I:%M %p') }}</div>
+        <p class="mt-2">{{ fb.comment }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p>No feedback yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
