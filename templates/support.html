@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% set hide_footer = True %}
+
+{% block title %}
+{{ t("Support / Help","सहायता / मदद") }} - GrainWala
+{% endblock %}
+
+{% block content %}
+<style>
+body {
+  background: #e6f9e6;
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.support-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.support-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.support-header h1 {
+  color: #007b5e;
+  margin-bottom: 10px;
+}
+
+.support-header p {
+  color: #333;
+  font-size: 15px;
+}
+
+.support-section {
+  margin-bottom: 40px;
+}
+
+.support-section h2 {
+  color: #007b5e;
+  font-size: 20px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #7CFC00;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  resize: none;
+}
+
+.contact-form button {
+  background: #007b5e;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.contact-form button:hover {
+  background: #005f46;
+}
+
+/* FAQ section */
+.faq-item {
+  margin-bottom: 15px;
+}
+
+.faq-item h4 {
+  margin: 0;
+  cursor: pointer;
+  color: #007b5e;
+}
+
+.faq-item p {
+  display: none;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Contact Info */
+.contact-info p {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.contact-info a {
+  color: #007b5e;
+  font-weight: bold;
+  text-decoration: none;
+}
+.contact-info a:hover {
+  text-decoration: underline;
+}
+</style>
+
+<div class="support-container">
+
+  <div class="support-header">
+    <h1>{{ t("Support & Help","सहायता और मदद") }}</h1>
+    <p>
+      {{ t(
+      "Need assistance? We're here to help you with orders, account issues, or any questions about our products.",
+      "मदद चाहिए? हम आपके ऑर्डर, अकाउंट संबंधी समस्याओं या हमारे उत्पादों से जुड़े किसी भी सवाल में आपकी सहायता के लिए मौजूद हैं।"
+      ) }}
+    </p>
+  </div>
+
+  <!-- Contact Form -->
+  <div class="support-section">
+    <h2>{{ t("Contact Support","सपोर्ट से संपर्क करें") }}</h2>
+
+    <form class="contact-form" method="POST" action="{{ url_for('support') }}">
+      <input type="text" name="name"
+             placeholder="{{ t('Your Name','आपका नाम') }}" required>
+
+      <input type="email" name="email"
+             placeholder="{{ t('Your Email','आपका ईमेल') }}" required>
+
+      <textarea name="message" rows="5" required
+        placeholder="{{ t('Describe your issue or question...',
+                          'अपनी समस्या या प्रश्न का विवरण दें...') }}">
+      </textarea>
+
+      <button type="submit">
+        {{ t("Submit Request","अनुरोध सबमिट करें") }}
+      </button>
+    </form>
+  </div>
+
+  <!-- FAQ -->
+  <div class="support-section">
+    <h2>
+      {{ t("Frequently Asked Questions (FAQ)",
+           "अक्सर पूछे जाने वाले प्रश्न (FAQ)") }}
+    </h2>
+
+    <div class="faq-item">
+      <h4>
+        📦 {{ t("How can I track my order?",
+               "मैं अपना ऑर्डर कैसे ट्रैक कर सकता हूँ?") }}
+      </h4>
+      <p>
+        {{ t(
+        "You can use our Order Tracking page to check real-time status.",
+        "आप रियल-टाइम स्थिति देखने के लिए हमारे Order Tracking पेज का उपयोग कर सकते हैं।"
+        ) }}
+        <a href="{{ url_for('track_order') }}">
+          {{ t("Track Order","ऑर्डर ट्रैक करें") }}
+        </a>
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h4>
+        💳 {{ t("What payment methods do you accept?",
+               "आप कौन-कौन से भुगतान तरीके स्वीकार करते हैं?") }}
+      </h4>
+      <p>
+        {{ t(
+        "We accept UPI, Credit/Debit Cards, Net Banking, and Cash on Delivery (COD).",
+        "हम UPI, क्रेडिट/डेबिट कार्ड, नेट बैंकिंग और कैश ऑन डिलीवरी (COD) स्वीकार करते हैं।"
+        ) }}
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h4>
+        🔁 {{ t("What is your return policy?",
+               "आपकी रिटर्न नीति क्या है?") }}
+      </h4>
+      <p>
+        {{ t(
+        "If you receive a damaged or wrong product, you can request a return within 3 days of delivery.",
+        "यदि आपको खराब या गलत उत्पाद मिलता है, तो आप डिलीवरी के 3 दिनों के भीतर रिटर्न का अनुरोध कर सकते हैं।"
+        ) }}
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h4>
+        🚚 {{ t("How long does delivery take?",
+               "डिलीवरी में कितना समय लगता है?") }}
+      </h4>
+      <p>
+        {{ t(
+        "Most orders are delivered within 3–5 business days, depending on your location.",
+        "अधिकांश ऑर्डर आपके स्थान के अनुसार 3–5 कार्यदिवसों में डिलीवर हो जाते हैं।"
+        ) }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Contact Info -->
+  <div class="support-section contact-info">
+    <h2>{{ t("Quick Support","त्वरित सहायता") }}</h2>
+
+    <p>
+      📞 {{ t("Call us","कॉल करें") }}:
+      <a href="tel:+918050797979">+91 8050797979</a>
+    </p>
+
+    <p>
+      📩 {{ t("Email","ईमेल") }}:
+      <a href="mailto:grainwala92@gmail.com">grainwala92@gmail.com</a>
+    </p>
+
+    <p>
+      💬 {{ t("Chat: Available 9AM – 8PM daily",
+              "चैट: प्रतिदिन सुबह 9 बजे से रात 8 बजे तक उपलब्ध") }}
+    </p>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.faq-item h4').forEach(q => {
+  q.addEventListener('click', () => {
+    const p = q.nextElementSibling;
+    p.style.display = p.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
+
+{% endblock %}

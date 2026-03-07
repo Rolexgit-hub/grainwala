@@ -1,0 +1,192 @@
+:root {
+  --primary: #2563eb;
+  --success: #16a34a;
+  --bg: #e6f9e6;
+  --border: #d1d5db;
+}
+
+/* ===== BODY FIX (CENTER + NO CHIPAKNA) ===== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  margin: 0;
+
+  display: flex;
+  justify-content: center;      /* left-right center */
+  align-items: flex-start;      /* ❌ upar-niche chipakna band */
+
+  min-height: 100vh;
+  padding-top: 90px;            /* 🔥 navbar ke niche space */
+  padding-bottom: 60px;         /* neeche breathing space */
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  background: #fff;
+  padding: 26px 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+
+  width: 100%;
+  max-width: 540px;             /* 🔥 login + register balanced */
+}
+
+/* ===== HEADINGS ===== */
+h1 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 24px;
+}
+
+h2 {
+  grid-column: span 2;
+  margin: 6px 0 10px;
+  font-size: 20px;
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #e5e7eb;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ===== FORM SECTION ===== */
+.form-section {
+  display: none;
+}
+
+.form-section.active {
+  display: block;
+}
+
+/* ===== FORM GRID ===== */
+.form {
+  display: none;
+}
+
+.form.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 🔥 two column */
+  gap: 14px;
+}
+
+/* ===== INPUTS ===== */
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input[readonly] {
+  background: #f3f4f6;
+}
+
+/* ===== FULL WIDTH ELEMENTS ===== */
+select,
+input[type="password"],
+button {
+  grid-column: span 2;
+}
+
+/* ===== BUTTON ===== */
+button {
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--success);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #15803d;
+}
+
+/* ===== TEXT ===== */
+p {
+  grid-column: span 2;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+p a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FLASH MESSAGES ===== */
+.flash-messages {
+  margin-bottom: 14px;
+}
+
+.alert {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.alert-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width: 768px) {
+  body {
+    padding-top: 40px;
+  }
+
+  .container {
+    margin: 0 14px;
+    padding: 22px;
+  }
+
+  .form.active {
+    grid-template-columns: 1fr;
+  }
+
+  select,
+  input[type="password"],
+  button,
+  p,
+  h2 {
+    grid-column: span 1;
+  }
+}

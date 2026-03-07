@@ -1,0 +1,476 @@
+{% extends "base.html" %}
+{% block title %}About Us | GrainWala{% endblock %}
+
+{% block content %}
+<style>
+:root{
+  --green:#1b7f3a;
+  --green-soft:#e6f4ec;
+  --dark:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --bg:#e6f9e6;
+  --font-primary: "Inter", Arial, sans-serif;
+}
+
+body{ 
+  background:var(--bg); 
+  font-family: var(--font-primary);
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#1b7f3a,#2fa36b);
+  color:#fff;
+  padding:110px 20px;
+  text-align:center;
+}
+.hero h1{ 
+  font-size:3.2rem; 
+  font-weight:800; 
+  font-family: var(--font-primary);
+}
+.hero p{
+  max-width:950px;
+  margin:18px auto 0;
+  font-size:1.15rem;
+  line-height:1.7;
+  opacity:0.95;
+  font-family: var(--font-primary);
+}
+
+/* COMMON */
+.section{ padding:90px 20px; }
+.container{ max-width:1200px; margin:auto; }
+
+.grid{ display:grid; gap:35px; }
+.cols-2{ grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+.cols-3{ grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+.cols-4{ grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+
+/* CARD */
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:38px;
+  font-family: var(--font-primary);
+}
+
+/* IMAGE */
+.about-img{
+  width:100%;
+  border-radius:20px;
+}
+
+/* IMPACT */
+.impact{
+  background:#e6f9e6;
+  overflow:hidden;
+}
+.impact h2{
+  font-size:2.6rem;
+  color:var(--green);
+  font-family: var(--font-primary);
+}
+.impact-desc{
+  max-width:1050px;
+  font-size:1.05rem;
+  line-height:1.8;
+  color:#555;
+  margin-top:12px;
+  font-family: var(--font-primary);
+}
+.impact-flow{
+  margin-top:80px;
+  position:relative;
+}
+.impact-line{
+  position:absolute;
+  top:50%;
+  left:-10%;
+  width:120%;
+  height:2px;
+  background:#cfe7d6;
+  z-index:0;
+}
+.impact-items{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:relative;
+  z-index:1;
+  flex-wrap:wrap;
+  gap:40px;
+}
+.impact-item{
+  text-align:center;
+  width:200px;
+}
+.impact-circle{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:2px solid #b9dfc8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:auto;
+  background:#f9fafb;
+}
+.impact-inner{
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  background:#e6f4ec;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:800;
+  color:var(--green);
+  font-family: var(--font-primary);
+}
+.impact-item p{
+  margin-top:14px;
+  font-size:14px;
+  color:#4b5563;
+  line-height:1.5;
+  font-family: var(--font-primary);
+}
+
+/* BUSINESS */
+.business{ background:#e6f9e6; }
+.business-card h4{
+  color:var(--green);
+  margin-bottom:10px;
+  font-family: var(--font-primary);
+}
+.business-card p{
+  color:#444;
+  line-height:1.7;
+  font-family: var(--font-primary);
+}
+
+/* VALUES */
+.value{
+  background:#ffffff;
+  border-radius:20px;
+  border:1px solid var(--border);
+  padding:35px;
+  font-family: var(--font-primary);
+}
+.value h4{ color:var(--green); font-family: var(--font-primary); }
+
+/* TEAM */
+.team{text-align:center; font-family: var(--font-primary);}
+.team img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--green-soft);
+  margin-bottom:15px;
+}
+.team h4{ margin-bottom:5px; font-family: var(--font-primary);}
+.team p{ color:var(--muted); font-size:14px; font-family: var(--font-primary); }
+
+/* AWARDS */
+.awards{
+  background:#ffffff;
+  font-family: var(--font-primary);
+}
+.awards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:35px;
+  margin-top:45px;
+}
+.award-card{
+  text-align:center;
+  padding:35px;
+  background:#f9fafb;
+  border-radius:22px;
+  border:1px solid var(--border);
+  font-family: var(--font-primary);
+}
+.award-card img{
+  width:140px;
+  opacity:0.7;
+  margin-bottom:18px;
+}
+
+/* CTA */
+.cta{
+  background:#1b7f3a;
+  color:#fff;
+  text-align:center;
+  padding:80px 30px;
+  border-radius:22px;
+  font-family: var(--font-primary);
+}
+.cta a{
+  display:inline-block;
+  margin-top:25px;
+  background:#fff;
+  color:#1b7f3a;
+  padding:15px 36px;
+  border-radius:35px;
+  font-weight:700;
+  text-decoration:none;
+  font-family: var(--font-primary);
+}
+
+</style>
+
+<div class="about-wrapper">
+
+<!-- HERO -->
+<section class="hero">
+  <h1>{{ t(
+  "Empowering Indian Agriculture Digitally",
+  "भारतीय कृषि को डिजिटल रूप से सशक्त बनाना"
+) }}</h1>
+  <p>
+    {{ t(
+  "GrainWala is a technology-driven agri-commerce platform built to transform the agricultural value chain by directly connecting farmers, FPOs (Farmer Producer Organization), retailers, and consumers across India.",
+  "GrainWala एक तकनीक-आधारित एग्री-कॉमर्स प्लेटफॉर्म है, जिसका उद्देश्य किसानों, एफपीओ (किसान उत्पादक संगठन), खुदरा विक्रेताओं और उपभोक्ताओं को सीधे जोड़कर कृषि मूल्य श्रृंखला को बदलना है।"
+) }}
+  </p>
+</section>
+
+<!-- WHO WE ARE -->
+<section class="section">
+  <div class="container grid cols-2">
+    <div>
+      <h2>{{ t("Who We Are", "हम कौन हैं") }}</h2>
+      <p>
+        <b>GrainWala</b>{{ t(
+  "was founded with a clear mission — to build a transparent, efficient, and farmer-centric agricultural ecosystem.",
+  "की स्थापना एक स्पष्ट उद्देश्य के साथ की गई — एक पारदर्शी, कुशल और किसान-केंद्रित कृषि पारिस्थितिकी तंत्र का निर्माण।"
+) }}
+      </p>
+      <p>
+       {{ t(
+  "We remove unnecessary intermediaries, enable fair price discovery, and ensure consistent access to quality agricultural produce for buyers.",
+  "हम अनावश्यक बिचौलियों को हटाते हैं, उचित मूल्य निर्धारण सुनिश्चित करते हैं और खरीदारों को गुणवत्तापूर्ण कृषि उत्पादों की निरंतर उपलब्धता देते हैं।"
+) }}
+      </p>
+      <p>
+        {{ t(
+  "Our digital platform integrates sourcing, quality control, logistics, and market intelligence to create long-term value for every stakeholder.",
+  "हमारा डिजिटल प्लेटफॉर्म सोर्सिंग, गुणवत्ता नियंत्रण, लॉजिस्टिक्स और बाज़ार जानकारी को एकीकृत कर सभी हितधारकों के लिए दीर्घकालिक मूल्य बनाता है।"
+) }}
+      </p>
+    </div>
+    <div>
+      <img src="{{ url_for('static', filename='images/pulses and grains.jpg') }}" class="about-img">
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="section impact">
+  <div class="container">
+    <h2>{{ t(
+  "The Impact of GrainWala’s Digital Initiatives",
+  "GrainWala की डिजिटल पहलों का प्रभाव"
+) }}</h2>
+    <p class="impact-desc">
+     {{ t(
+  "GrainWala’s technology-led initiatives are driving large-scale, measurable transformation across the agricultural ecosystem — empowering farmers, strengthening supply chains, and enabling transparent market access nationwide.",
+  "GrainWala की तकनीक-आधारित पहलें पूरे कृषि पारिस्थितिकी तंत्र में बड़े स्तर पर मापने योग्य बदलाव ला रही हैं — किसानों को सशक्त बनाना, आपूर्ति श्रृंखला को मजबूत करना और देशभर में पारदर्शी बाज़ार तक पहुँच को सक्षम बनाना।"
+) }}
+    </p>
+
+    <div class="impact-flow">
+      <div class="impact-line"></div>
+      <div class="impact-items">
+        <div class="impact-item">
+          <div class="impact-circle">
+            <div class="impact-inner">5K+</div>
+          </div>
+          <p>{{ t(
+  "Farmers & FPOs digitally connected to structured markets",
+  "किसान और एफपीओ डिजिटल रूप से संगठित बाज़ारों से जुड़े"
+) }}</p>
+        </div>
+        <div class="impact-item">
+          <div class="impact-circle">
+            <div class="impact-inner">50K+</div>
+          </div>
+          <p>{{ t(
+  "Retailers & consumers served through reliable sourcing",
+  "विश्वसनीय सोर्सिंग के माध्यम से खुदरा विक्रेता और उपभोक्ता जुड़े"
+) }}</p>
+        </div>
+        <div class="impact-item">
+          <div class="impact-circle">
+            <div class="impact-inner">120+</div>
+          </div>
+          <p>{{ t(
+  "Quality-assured agri products across categories",
+  "विभिन्न श्रेणियों में गुणवत्ता-सुनिश्चित कृषि उत्पाद"
+) }}</p>
+        </div>
+        <div class="impact-item">
+          <div class="impact-circle">
+            <div class="impact-inner">IND</div>
+          </div>
+          <p>{{ t(
+  "Pan-India sourcing & distribution footprint",
+  "पूरे भारत में सोर्सिंग और वितरण नेटवर्क"
+) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR BUSINESS -->
+<section class="section business">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:45px;font-size:32px;">{{ t("Our Business Verticals", "हमारे व्यवसाय क्षेत्र") }}</h2>
+    <div class="grid cols-3">
+      <div class="card business-card">
+        <h4>{{ t(
+  "Digital Agri Marketplace",
+  "डिजिटल कृषि बाज़ार"
+) }}</h4>
+        <p>
+        {{ t(
+  "A scalable online marketplace enabling farmers to sell directly to buyers.",
+  "एक स्केलेबल ऑनलाइन प्लेटफॉर्म जो किसानों को सीधे खरीदारों से जोड़ता है।"
+) }}
+        </p>
+      </div>
+      <div class="card business-card">
+        <h4>{{ t("Supply Chain & Quality Assurance","आपूर्ति श्रृंखला और गुणवत्ता आश्वासन") }}</h4>
+        <p>
+           {{ t(
+            "Robust sourcing, grading, and quality checks ensuring consistency, traceability, and trust across the supply chain.",
+            "मजबूत सोर्सिंग, ग्रेडिंग और गुणवत्ता जांच जो पूरी आपूर्ति श्रृंखला में स्थिरता, ट्रेसबिलिटी और भरोसा सुनिश्चित करती है।"
+          ) }}
+        </p>
+      </div>
+      <div class="card business-card">
+        <h4>{{ t("Market Access & Price Discovery","बाज़ार पहुँच और मूल्य खोज") }}</h4>
+        <p>
+          {{ t(
+            "Data-driven pricing and nationwide demand linkage helping farmers achieve better realization for their produce.",
+            "डेटा-आधारित मूल्य निर्धारण और देशव्यापी मांग से जुड़ाव जो किसानों को बेहतर मूल्य दिलाने में मदद करता है।"
+          ) }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:40px;font-size:32px;"> {{ t("Our Core Values","हमारे मूल मूल्य") }}</h2>
+    <div class="grid cols-3">
+      <div class="value"><h4>{{ t("Farmer-First Approach","किसान-प्रथम दृष्टिकोण") }}</h4><p>{{ t("Every decision starts with farmer prosperity.","हर निर्णय किसान की समृद्धि से शुरू होता है।") }}</p></div>
+      <div class="value"><h4>{{ t("Integrity & Transparency","ईमानदारी और पारदर्शिता") }}</h4><p>{{ t("Honest pricing, clear processes, trusted relationships.","ईमानदार मूल्य निर्धारण, स्पष्ट प्रक्रियाएं और भरोसेमंद संबंध।") }}</p></div>
+      <div class="value"><h4>{{ t("Quality Without Compromise","बिना समझौते की गुणवत्ता") }}</h4><p>{{ t("Consistent standards from farm to consumer.","खेत से उपभोक्ता तक एकसमान गुणवत्ता मानक।") }}</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="section awards">
+  <div class="container">
+    <h2 style="text-align:center;">      {{ t("Awards & Recognition","पुरस्कार और मान्यता") }}
+</h2>
+    <p style="text-align:center;max-width:900px;margin:auto;color:#555;">
+      {{ t(
+        "GrainWala’s efforts in building a sustainable and technology-enabled agricultural ecosystem have been recognized by industry platforms and institutions.",
+        "टिकाऊ और तकनीक-सक्षम कृषि इकोसिस्टम बनाने में GrainWala के प्रयासों को उद्योग मंचों और संस्थानों द्वारा मान्यता मिली है।"
+      ) }}
+    </p>
+
+    <div class="awards-grid">
+      <div class="award-card">
+        <img src="{{ url_for('static', filename='images/Bulb.png') }}">
+        <h4>{{ t("Agri Innovation Award","कृषि नवाचार पुरस्कार") }}</h4>
+        <p>{{ t("For digital transformation in agriculture","कृषि में डिजिटल परिवर्तन के लिए") }}</p>
+      </div>
+      <div class="award-card">
+        <img src="{{ url_for('static', filename='images/Cup.png') }}">
+        <h4>{{ t("Startup Excellence","स्टार्टअप उत्कृष्टता") }}</h4>
+        <p>{{ t("Emerging agri-commerce platform","उभरता हुआ एग्री-कॉमर्स प्लेटफॉर्म") }}</p>
+      </div>
+      <div class="award-card">
+        <img src="{{ url_for('static', filename='images/Far.png') }}">
+        <h4>{{ t("Farmer Impact Recognition","किसान प्रभाव सम्मान") }}</h4>
+        <p>{{ t("Empowering rural livelihoods","ग्रामीण आजीविका को सशक्त बनाना") }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section" style="padding:60px 0; background:#e6f9e6;">
+  <div class="container">
+    <h2 style="text-align:center; margin-bottom:20px; font-size:32px; font-weight:bold; color:black;">
+{{ t("Our Leadership Team","हमारी नेतृत्व टीम") }}
+    </h2>
+    <p style="text-align:center; max-width:700px; margin:0 auto 50px; color:#555; font-size:16px;">
+ {{ t(
+        "GrainWala was built by a dedicated team of professionals, each contributing their expertise to transform India’s agricultural value chain.",
+        "GrainWala को समर्पित पेशेवरों की एक टीम ने बनाया है, जो भारत की कृषि मूल्य श्रृंखला को बदलने में योगदान दे रही है।"
+      ) }}
+        </p>
+    <div class="grid cols-4">
+      <div class="card team">
+        <img src="{{ url_for('static', filename='images/anuj.jpg') }}" alt="Anuj Goswami">
+        <h4>{{ t("Anuj Goswami","अनुज गोस्वामी") }}</h4>
+        <p><strong>        {{ t("Co-Founder & Lead Developer","सह-संस्थापक एवं प्रमुख डेवलपर") }}
+</strong><br>{{ t(
+        "Platform development & technical architecture",
+        "प्लेटफॉर्म विकास और तकनीकी संरचना"
+      ) }}</p>
+      </div>
+      <div class="card team">
+        <img src="{{ url_for('static', filename='images/pritam.jpg') }}" alt="Pritam Kumar Verma">
+        <h4>{{ t("Pritam Kumar Verma","प्रीतम कुमार वर्मा") }}</h4>
+        <p><strong>        {{ t("Co-Founder & Operations Lead","सह-संस्थापक एवं संचालन प्रमुख") }}
+</strong><br>{{ t(
+        "Process optimization & partnerships",
+        "प्रक्रिया सुधार और साझेदारी प्रबंधन"
+      ) }}</p>
+      </div>
+      <div class="card team">
+        <img src="{{ url_for('static', filename='images/mayank.jpg') }}" alt="Mayank Kumar">
+        <h4>{{ t("Mayank Kumar","मयंक कुमार") }}</h4>
+        <p><strong>{{ t("Product & Quality Manager","उत्पाद और गुणवत्ता प्रबंधक") }}</strong><br> {{ t(
+        "Product features, quality & UX",
+        "उत्पाद फीचर्स, गुणवत्ता और उपयोगकर्ता अनुभव"
+      ) }}</p>
+      </div>
+      <div class="card team">
+        <img src="{{ url_for('static', filename='images/rajdeep.jpg') }}" alt="Rajdeep">
+        <h4>{{ t("Rajdeep","राजदीप") }}</h4>
+        <p><strong>        {{ t("Marketing & Growth Lead","मार्केटिंग और विकास प्रमुख") }}
+</strong><br> {{ t(
+        "Branding, promotion & customer engagement",
+        "ब्रांडिंग, प्रचार और ग्राहक जुड़ाव"
+      ) }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container cta">
+    <h2>{{ t("Building the Future of Indian Agriculture","भारतीय कृषि का भविष्य बना रहे हैं") }}</h2>
+    <p>{{ t("Partner with GrainWala to support farmers and access trusted agri products.","किसानों का समर्थन करने और विश्वसनीय कृषि उत्पाद पाने के लिए GrainWala से जुड़ें।") }}</p>
+    <a href="{{ url_for('products_page') }}">      {{ t("Explore Products","उत्पाद देखें") }}
+</a>
+  </div>
+</section>
+
+</div>
+{% endblock %}

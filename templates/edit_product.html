@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% set hide_footer = True %}
+
+{% block title %}
+{{ t("Edit Product - Farmer Panel","उत्पाद संपादित करें - किसान पैनल") }}
+{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+body { background-color: #e6f9e6; }
+.required { color:red; }
+</style>
+
+<div class="container my-5">
+    <h2 class="fw-bold text-success mb-4">
+        <i class="bi bi-pencil-square"></i>
+        {{ t("Edit Product","उत्पाद संपादित करें") }}
+    </h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Product Name","उत्पाद का नाम") }}</label>
+            <input type="text" class="form-control" name="product_name" value="{{ product.name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Category","श्रेणी") }}</label>
+            <select class="form-select" name="category" required>
+                <option value="Grains & Pulses" {% if product.category=='Grains & Pulses' %}selected{% endif %}>
+                    {{ t("Grains & Pulses","अनाज और दालें") }}
+                </option>
+                <option value="Fresh Vegetables" {% if product.category=='Fresh Vegetables' %}selected{% endif %}>
+                    {{ t("Fresh Vegetables","ताज़ी सब्ज़ियाँ") }}
+                </option>
+                <option value="Fresh Fruits" {% if product.category=='Fresh Fruits' %}selected{% endif %}>
+                    {{ t("Fresh Fruits","ताज़े फल") }}
+                </option>
+                <option value="Spices & Herbs" {% if product.category=='Spices & Herbs' %}selected{% endif %}>
+                    {{ t("Spices & Herbs","मसाले और जड़ी-बूटियाँ") }}
+                </option>
+                <option value="Oil Seeds & Nuts" {% if product.category=='Oil Seeds & Nuts' %}selected{% endif %}>
+                    {{ t("Oil Seeds & Nuts","तेल बीज और मेवे") }}
+                </option>
+                <option value="Other" {% if product.category=='Other' %}selected{% endif %}>
+                    {{ t("Other","अन्य") }}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Price per unit (₹)","प्रति यूनिट मूल्य (₹)") }}</label>
+            <input type="number" class="form-control" name="price_per_unit"
+                   value="{{ product.price_min }}" min="0" step="0.01" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">
+                {{ t("Stock Quality","स्टॉक की गुणवत्ता") }}
+                <span class="required">*</span>
+            </label>
+            <select class="form-select" name="stock_status" required>
+                <option value="">{{ t("Select Stock Quality","स्टॉक गुणवत्ता चुनें") }}</option>
+                <option value="Fresh" {% if product.stock_status=='Fresh' %}selected{% endif %}>
+                    {{ t("Fresh","ताज़ा") }}
+                </option>
+                <option value="Premium" {% if product.stock_status=='Premium' %}selected{% endif %}>
+                    {{ t("Premium","प्रीमियम") }}
+                </option>
+                <option value="Standard" {% if product.stock_status=='Standard' %}selected{% endif %}>
+                    {{ t("Standard","सामान्य") }}
+                </option>
+                <option value="Organic" {% if product.stock_status=='Organic' %}selected{% endif %}>
+                    {{ t("Organic","जैविक") }}
+                </option>
+                <option value="Seasonal" {% if product.stock_status=='Seasonal' %}selected{% endif %}>
+                    {{ t("Seasonal","मौसमी") }}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Quantity","मात्रा") }}</label>
+            <input type="number" class="form-control" name="quantity"
+                   value="{{ product.quantity or 0 }}" min="0">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Contact Number","संपर्क नंबर") }}</label>
+            <input type="text" class="form-control" name="contact_number"
+                   value="{{ product.contact_number }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">
+                {{ t("Location","स्थान (जिला)") }}
+                <span class="required">*</span>
+            </label>
+            <select class="form-select" name="location" required>
+                <option value="">{{ t("Select District","जिला चुनें") }}</option>
+                {% for d in [
+                  "Araria","Arwal","Aurangabad","Banka","Begusarai","Bhagalpur","Bhojpur","Buxar",
+                  "Darbhanga","East Champaran","Gaya","Gopalganj","Jamui","Jehanabad","Kaimur",
+                  "Katihar","Khagaria","Kishanganj","Lakhisarai","Madhepura","Madhubani","Munger",
+                  "Muzaffarpur","Nalanda","Nawada","Patna","Purnia","Rohtas","Saharsa","Samastipur",
+                  "Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan","Supaul","Vaishali","West Champaran"
+                ] %}
+                <option value="{{ d }}" {% if product.location==d %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Variety","किस्म") }}</label>
+            <input type="text" class="form-control" name="variety"
+                   value="{{ product.variety or '' }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Negotiable","मोलभाव योग्य") }}</label>
+            <select class="form-select" name="negotiable">
+                <option value="1" {% if product.negotiable %}selected{% endif %}>
+                    {{ t("Yes","हाँ") }}
+                </option>
+                <option value="0" {% if not product.negotiable %}selected{% endif %}>
+                    {{ t("No","नहीं") }}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Delivery Available","डिलीवरी उपलब्ध") }}</label>
+            <select class="form-select" name="delivery_available">
+                <option value="1" {% if product.delivery_available %}selected{% endif %}>
+                    {{ t("Yes","हाँ") }}
+                </option>
+                <option value="0" {% if not product.delivery_available %}selected{% endif %}>
+                    {{ t("No","नहीं") }}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Harvest Date","कटाई की तारीख") }}</label>
+            <input type="date" class="form-control" name="harvest_date"
+                   value="{{ product.harvest_date|default('') }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">
+                {{ t("Weights (comma separated)","वजन (कॉमा से अलग करें)") }}
+            </label>
+            <input type="text" class="form-control" name="weight_options"
+                   value="{{ product.weights | join(', ') }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Description","विवरण") }}</label>
+            <textarea class="form-control" name="description" rows="4">
+{{ product.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ t("Existing Images","मौजूदा चित्र") }}</label>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                {% for img in product.image %}
+                <img src="{{ url_for('static', filename='images/' ~ img) }}"
+                     class="img-thumbnail"
+                     style="width:100px;height:100px;object-fit:cover;">
+                {% endfor %}
+            </div>
+
+            <label class="form-label">{{ t("Add New Images","नई तस्वीरें जोड़ें") }}</label>
+            <input type="file" class="form-control" name="images" multiple accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i>
+            {{ t("Update Product","उत्पाद अपडेट करें") }}
+        </button>
+
+        <a href="{{ url_for('farmer_manage_products') }}" class="btn btn-secondary ms-2">
+            <i class="bi bi-arrow-left"></i>
+            {{ t("Back","वापस जाएँ") }}
+        </a>
+
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

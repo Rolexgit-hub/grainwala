@@ -1,0 +1,396 @@
+{% extends 'base.html' %}
+{% set hide_footer = True %}
+{% block content %}
+<style>
+  body {
+    background: #e6f9e6;
+  }
+
+  .add-product-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .product-header {
+    background: linear-gradient(135deg, #007b5e 0%, #005f47 100%);
+    color: white;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .brand {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.9;
+  }
+
+  .form-container {
+    padding: 32px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .form-group label .required {
+    color: #c0152f;
+  }
+
+  .form-control {
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    transition: all 0.3s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #007b5e;
+    box-shadow: 0 0 0 3px rgba(0, 123, 94, 0.1);
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafafa;
+  }
+
+  .upload-area:hover {
+    border-color: #007b5e;
+    background: #f0f9f6;
+  }
+
+  .upload-area i {
+    font-size: 48px;
+    color: #007b5e;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .preview-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid rgba(94, 82, 64, 0.2);
+  }
+
+  .preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-item .remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #c0152f;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(94, 82, 64, 0.2);
+  }
+
+  .btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: #007b5e;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #006b50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 94, 0.3);
+  }
+
+  .btn-secondary {
+    background: rgba(94, 82, 64, 0.12);
+    color: #333;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(94, 82, 64, 0.2);
+  }
+</style>
+
+<div class="add-product-container">
+  <div class="product-header">
+    <h1><i class="fas fa-box-open"></i> {{ t("Add New Product", "नया उत्पाद जोड़ें") }}</h1>
+    <span class="brand">🌾 GrainWala</span>
+  </div>
+
+  <div class="form-container">
+    <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
+
+      <!-- Basic Info -->
+      <div class="form-grid">
+        <div class="form-group">
+          <label>{{ t("Product Name", "उत्पाद का नाम") }} <span class="required">*</span></label>
+          <input type="text" class="form-control" name="product_name" required />
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Category", "श्रेणी") }} <span class="required">*</span></label>
+          <select class="form-control" name="category" required>
+            <option value="">{{ t("Select Category", "श्रेणी चुनें") }}</option>
+            <option value="Grains & Pulses">{{ t("Grains & Pulses", "अनाज व दालें") }}</option>
+            <option value="Fresh Vegetables">{{ t("Fresh Vegetables", "ताज़ी सब्ज़ियाँ") }}</option>
+            <option value="Fresh Fruits">{{ t("Fresh Fruits", "ताज़े फल") }}</option>
+            <option value="Spices & Herbs">{{ t("Spices & Herbs", "मसाले व जड़ी-बूटियाँ") }}</option>
+            <option value="Oil Seeds & Nuts">{{ t("Oil Seeds & Nuts", "तेल बीज व मेवे") }}</option>
+            <option value="Other">{{ t("Other", "अन्य") }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Variety", "प्रकार") }}</label>
+          <input type="text" class="form-control" name="variety" />
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Weight Options", "वजन विकल्प") }} ({{ t("comma separated", "अल्पविराम से अलग") }}) <span class="required">*</span></label>
+          <input type="text" class="form-control" name="weight_options" placeholder="{{ t('Quintal, Dozen, Kg', 'क्विंटल, दर्जन, किलो') }}" />
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Farmer Contact Number", "किसान का संपर्क नंबर") }} <span class="required">*</span></label>
+          <input type="tel" class="form-control" name="contact_number" placeholder="{{ t('Enter your phone number', 'अपना फोन नंबर डालें') }}" required pattern="[0-9]{10}" />
+        </div>
+      </div>
+
+      <!-- Quantity & Price -->
+      <div class="form-grid">
+        <div class="form-group">
+          <label>{{ t("Quantity", "मात्रा") }} ({{ t("e.g., 100", "जैसे, 100") }}) <span class="required">*</span></label>
+          <input type="number" class="form-control" name="quantity" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Stock Quality", "स्टॉक की गुणवत्ता") }} <span class="required">*</span></label>
+          <select class="form-control" name="stock_status" required>
+            <option value="">{{ t("Select Stock Quality", "स्टॉक गुणवत्ता चुनें") }}</option>
+            <option value="Fresh">{{ t("Fresh", "ताज़ा") }}</option>
+            <option value="Premium">{{ t("Premium", "प्रिमियम") }}</option>
+            <option value="Standard">{{ t("Standard", "मानक") }}</option>
+            <option value="Organic">{{ t("Organic", "जैविक") }}</option>
+            <option value="Seasonal">{{ t("Seasonal", "मौसमी") }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Price Per Unit", "प्रति इकाई मूल्य") }} (₹) <span class="required">*</span></label>
+          <input type="number" class="form-control" name="price_per_unit" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Negotiable", "बातचीत योग्य") }}</label>
+          <select class="form-control" name="negotiable">
+            <option value="1">{{ t("Yes", "हाँ") }}</option>
+            <option value="0">{{ t("No", "नहीं") }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Location & Delivery -->
+      <div class="form-group full-width">
+        <label>{{ t("Location", "स्थान") }} <span class="required">*</span></label>
+        <select class="form-control" name="location" required>
+          <option value="">{{ t("Select District", "जिला चुनें") }}</option>
+          <option value="Araria">Araria (अररिया)</option>
+          <option value="Arwal">Arwal (अरवल)</option>
+          <option value="Aurangabad">Aurangabad (औरंगाबाद)</option>
+          <option value="Banka">Banka (बांका)</option>
+          <option value="Begusarai">Begusarai (बेगूसराय)</option>
+          <option value="Bhagalpur">Bhagalpur (भागलपुर)</option>
+          <option value="Bhojpur">Bhojpur (भोजपुर)</option>
+          <option value="Buxar">Buxar (बक्सर)</option>
+          <option value="Darbhanga">Darbhanga (दरभंगा)</option>
+          <option value="East Champaran">East Champaran (पूर्वी चंपारण)</option>
+          <option value="Gaya">Gaya (गया)</option>
+          <option value="Gopalganj">Gopalganj (गोपालगंज)</option>
+          <option value="Jamui">Jamui (जमुई)</option>
+          <option value="Jehanabad">Jehanabad (जहानाबाद)</option>
+          <option value="Kaimur">Kaimur (कैमूर)</option>
+          <option value="Katihar">Katihar (कटिहार)</option>
+          <option value="Khagaria">Khagaria (खगड़िया)</option>
+          <option value="Kishanganj">Kishanganj (किशनगंज)</option>
+          <option value="Lakhisarai">Lakhisarai (लखीसराय)</option>
+          <option value="Madhepura">Madhepura (मधेपुरा)</option>
+          <option value="Madhubani">Madhubani (मधुबनी)</option>
+          <option value="Munger">Munger (मुंगेर)</option>
+          <option value="Muzaffarpur">Muzaffarpur (मुजफ्फरपुर)</option>
+          <option value="Nalanda">Nalanda (नालंदा)</option>
+          <option value="Nawada">Nawada (नवादा)</option>
+          <option value="Patna">Patna (पटना)</option>
+          <option value="Purnia">Purnia (पूर्णिया)</option>
+          <option value="Rohtas">Rohtas (रोहतास)</option>
+          <option value="Saharsa">Saharsa (सहरसा)</option>
+          <option value="Samastipur">Samastipur (समस्तीपुर)</option>
+          <option value="Saran">Saran (सरान)</option>
+          <option value="Sheikhpura">Sheikhpura (शेखपुरा)</option>
+          <option value="Sheohar">Sheohar (शिवहर)</option>
+          <option value="Sitamarhi">Sitamarhi (सीतामढ़ी)</option>
+          <option value="Siwan">Siwan (सिवान)</option>
+          <option value="Supaul">Supaul (सुपौल)</option>
+          <option value="Vaishali">Vaishali (वैशाली)</option>
+          <option value="West Champaran">West Champaran (पश्चिमी चंपारण)</option>
+        </select>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>{{ t("Delivery Available", "डिलीवरी उपलब्ध") }}</label>
+          <select class="form-control" name="delivery_available">
+            <option value="1">{{ t("Yes", "हाँ") }}</option>
+            <option value="0">{{ t("No", "नहीं") }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{ t("Harvest Date", "कटाई की तारीख") }}</label>
+          <input type="date" class="form-control" name="harvest_date" />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group full-width">
+        <label>{{ t("Product Description", "उत्पाद विवरण") }}</label>
+        <textarea class="form-control" name="description" placeholder="{{ t('Describe your product quality, condition, etc.', 'उत्पाद की गुणवत्ता, स्थिति आदि का वर्णन करें') }}"></textarea>
+      </div>
+
+      <!-- Multiple Image Upload -->
+      <div class="form-group full-width">
+        <label>{{ t("Upload Product Images", "उत्पाद छवियाँ अपलोड करें") }} <span class="required">*</span></label>
+        <div class="upload-area" onclick="document.getElementById('productImages').click();">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p><strong>{{ t("Click to upload", "अपलोड करने के लिए क्लिक करें") }}</strong> {{ t("or drag and drop multiple images", "या कई छवियाँ खींचें और छोड़ें") }}</p>
+          <input type="file" id="productImages" name="images" multiple accept="image/*" onchange="handleImageUpload(event)" required />
+        </div>
+        <div id="imagePreview" class="preview-images"></div>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('farmer_dashboard') }}" class="btn btn-secondary">
+          <i class="fas fa-times"></i> {{ t("Cancel", "रद्द करें") }}
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-check"></i> {{ t("Add Product", "उत्पाद जोड़ें") }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function handleImageUpload(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = '';
+
+    for (let file of files) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`{{ t('File exceeds 5MB limit', '${file.name} 5MB से अधिक है') }}`);
+        continue;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'preview-item';
+        previewItem.innerHTML = `
+          <img src="${e.target.result}" alt="Preview" />
+          <button type="button" class="remove-btn" onclick="this.parentElement.remove();">
+            ✖
+          </button>
+        `;
+        previewContainer.appendChild(previewItem);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
+{% endblock %}

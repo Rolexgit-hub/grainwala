@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}GrainWala{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://unpkg.com/@indic-transliteration/sanscript"></script>
+
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="alert-container">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/GrainWala.png') }}" width="150" alt="GrainWala Logo" />
+      </div>
+      <div class="navbar">
+        <form class="search-container" action="{{ url_for('search') }}" method="GET">
+  <input type="text" name="query" placeholder="{{ t(
+  'Search directly from farmers to your home',
+  'सीधे किसानों से उत्पाद खोजें'
+) }}" required />
+  <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+</form>
+
+        <nav>
+          <ul>
+            </a>
+                      <a href="javascript:void(0);" id="change-lang">
+  🌐 {{ t("Language", "भाषा") }}
+
+</a>
+<li><a href="{{ url_for('index') }}">
+  <i class="fa-solid fa-house"></i>
+  {{ t("Home", "होम") }}
+</a></li>
+<li class="dropdown">
+<a href="javascript:void(0);" class="nav-link">
+  <i class="fa-solid fa-box-open"></i> {{ t("Products", "उत्पाद") }}
+  <i class="fa-solid fa-angle-down"></i>
+</a>
+
+              <div class="dropdown-content">
+  <a href="{{ url_for('category_products', cat_name='grains-pulses') }}">🌾 {{ t("Grains & Pulses", "अनाज व दालें") }}</a>
+  <a href="{{ url_for('category_products', cat_name='vegetables') }}">🥬 {{ t("Fresh Vegetables", "ताज़ी सब्ज़ियाँ") }}</a>
+  <a href="{{ url_for('category_products', cat_name='fruits') }}">🍎 {{ t("Fresh Fruits", "ताज़े फल") }}</a>
+  <a href="{{ url_for('category_products', cat_name='spices-herbs') }}">🌶 {{ t("Spices & Herbs", "मसाले व जड़ी-बूटियाँ") }}</a>
+  <a href="{{ url_for('category_products', cat_name='oil-seeds') }}">🌰 {{ t("Oil Seeds & Nuts", "तेल बीज व मेवे") }}
+</a>
+  <a href="{{ url_for('category_products', cat_name='other') }}">🍯 {{ t("Other", "अन्य") }} </a>
+</div>
+
+            </li>
+<li>
+ <a href="{{ url_for('about') }}">
+  <i class="fa-solid fa-circle-info"></i>
+  {{ t("About", "हमारे बारे में") }}
+</a>
+</li>            <li><a href="{{ url_for('track_order') }}" class="nav-link"><i class="fa-solid fa-truck"></i>  {{ t("Track Order", "ऑर्डर ट्रैक करें") }}</a></li>
+            <li class="dropdown" style="position:relative;">
+              {% if session.get('user_id') %}
+                <a href="#" class="nav-link">
+                  <!-- 🔹 Short Name show -->
+                  <i class="fa-solid fa-user"></i> {{ initials }} <i class="fa-solid fa-angle-down"></i>
+                </a>
+                <div class="dropdown-content profile-dropdown">
+                  {% if session['user_type'] == 'consumer' %}
+                    <span style="color: #007b5e; font-weight: bold;">{{ t("Consumer Panel", "ग्राहक पैनल") }}
+</span>
+                    <a href="{{ url_for('consumer_dashboard') }}">{{ t("My Profile", "मेरी प्रोफ़ाइल") }}
+</a>
+                    <a href="{{ url_for('consumer_orders') }}">{{ t("Orders", "मेरे ऑर्डर") }}
+</a>
+                    <a href="{{ url_for('support') }}">{{ t("Support & Help", "सहायता") }}
+</a>
+                    <a href="{{ url_for('wishlist') }}">{{ t("Wishlist", "पसंदीदा") }}
+
+                  {% elif session['user_type'] == 'farmer' %}
+                    <span style="color: #007b5e; font-weight: bold;">{{ t("Farmer Panel", "किसान पैनल") }}
+</span>
+                    <a href="{{ url_for('farmer_dashboard') }}">{{ t("My Profile", "मेरी प्रोफ़ाइल") }}
+</a>
+                                        <a href="{{ url_for('wishlist') }}">{{ t("Wishlist", "पसंदीदा") }}
+</a>
+
+                    <a href="{{ url_for('farmer_manage_products') }}">{{ t("Manage Products", "प्रोडक्ट प्रबंधन") }}
+</a>
+<a href="{{ url_for('farmer_feedback') }}">{{ t("Feedback / Reviews", "फीडबैक / रिव्यू") }}</a>
+                     <a href="{{ url_for('add_product') }}">{{ t("Add Product", "प्रोडक्ट जोड़ें") }}
+</a>
+                    <a href="{{ url_for('farmer_orders') }}">{{ t("Orders Received", "प्राप्त ऑर्डर") }}
+                  {% endif %}
+                  <hr>
+                  <a href="{{ url_for('logout') }}">{{ t("Logout", "लॉग आउट") }}</a>
+                </div>
+              {% else %}
+                <a href="{{ url_for('account') }}" class="nav-link"><i class="fa-solid fa-user"></i>{{ t("Account", "अकाउंट") }}</a>
+              {% endif %}
+            </li>
+            <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  {% if hide_footer is not defined or not hide_footer %}
+  <!-- Footer -->
+  <footer style="background:#1b2d1b; color:#d9d9d9; padding:40px 20px; font-family:Arial, sans-serif;">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; max-width:1200px; margin:auto;">
+      <div style="flex:1 1 300px; margin:10px;">
+        <h2 style="color:#7CFC00;">GrainWala</h2>
+        <p style="line-height:1.6; font-size:14px;">
+          {{ t(
+    "GrainWala is a trusted platform dedicated to bringing you fresh grains, pulses, fruits, vegetables, and organic products directly from farmers. Our mission is to make chemical-free, natural, and high-quality food accessible to every household while ensuring farmers receive fair and transparent prices for their produce. By connecting consumers with farmers, GrainWala promotes healthier lifestyles and supports sustainable agriculture.",
+    "GrainWala एक विश्वसनीय मंच है जो किसानों से सीधे ताज़ा अनाज, दालें, फल, सब्ज़ियाँ और जैविक उत्पाद आप तक पहुँचाता है। हमारा उद्देश्य हर घर तक रसायन-मुक्त, प्राकृतिक और उच्च गुणवत्ता वाला भोजन पहुँचाना है, साथ ही किसानों को उनकी उपज का उचित और पारदर्शी मूल्य दिलाना है। उपभोक्ताओं और किसानों को जोड़कर GrainWala स्वस्थ जीवनशैली और सतत कृषि को बढ़ावा देता है।"
+  ) }}
+        </p>
+      </div>
+
+      <div style="flex:1 1 200px; margin:10px;">
+        <h3 style="color:#7CFC00; margin-bottom:10px;"> {{ t("Quick Links", "त्वरित लिंक") }}</h3>
+        <ul style="list-style:none; padding:0; line-height:2;">
+          <li><a href="{{ url_for('about') }}" style="color:#d9d9d9; text-decoration:none;">{{ t("About Us", "हमारे बारे में") }}</a></li>
+          <li><a href="{{ url_for('products_page') }}" style="color:#d9d9d9; text-decoration:none;">{{ t("Our Products", "हमारे उत्पाद") }}</a></li>
+         <li><a href="{{ url_for('privacy_policy') }}" style="color:#d9d9d9; text-decoration:none;">{{ t("Privacy Policy", "गोपनीयता नीति") }}</a></li>
+
+          <li><a href="{{ url_for('return_policy') }}" style="color:#d9d9d9; text-decoration:none;"> {{ t("Return & Refund", "रिटर्न और रिफंड") }}</a></li>
+
+          <li><a href="{{ url_for('faq') }}" style="color:#d9d9d9; text-decoration:none;">{{ t("FAQ", "अक्सर पूछे जाने वाले प्रश्न") }}</a></li>
+        </ul>
+      </div>
+
+      <div style="flex:1 1 250px; margin:10px;">
+        <h3 style="color:#7CFC00; margin-bottom:10px;">{{ t("Contact Us", "संपर्क करें") }}</h3>
+        <p>📞 {{ t("Call", "कॉल") }}: <a href="tel:+918050797979" style="color:orange; font-weight:bold;">+91 8050797979</a></p>
+        <p>📩 {{ t("Email", "ईमेल") }}: <a href="mailto:support@grainwala.com" style="color:orange; font-weight:bold;">support@grainwala.com</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> {{ t("Patna, Bihar, India", "पटना, बिहार, भारत") }}</p>
+        <div style="margin-top:15px;">
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" width="28" style="margin-right:10px;" /></a>
+          <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="28" style="margin-right:10px;" /></a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:30px; border-top:1px solid #444; padding-top:15px; font-size:13px;">
+      © 2025 GrainWala.  {{ t("All Rights Reserved.", "सभी अधिकार सुरक्षित।") }}
+    </div>
+  </footer>
+  {% endif %}
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- GrainWala Floating Chatbot -->
+<div id="gw-launcher" tabindex="0">
+    <img src="{{ url_for('static', filename='images/chatbot.png') }}">
+</div>
+
+<!-- Language Select Modal -->
+<div id="gw-lang-modal" class="gw-modal">
+  <div class="gw-modal-content">
+<h3 style="margin-bottom:10px;">{{ t("Please select language", "कृपया भाषा चुनें") }}</h3>
+
+    <label><input type="radio" name="gw-lang" value="en" checked> English</label><br>
+    <label><input type="radio" name="gw-lang" value="hi"> हिन्दी</label><br><br>
+
+   <button id="gw-lang-ok">{{ t("OK", "ठीक है") }}</button>
+    <button id="gw-lang-cancel">{{ t("Close", "बंद करें") }}</button>
+  </div>
+</div>
+
+<div id="gw-chatbox" aria-hidden="true">
+  <div id="gw-header">
+    <span>{{ t("GrainWala Assistant", "ग्रेनवाला सहायक") }}</span>
+    <button id="gw-close" aria-label="{{ t('Close chat', 'चैट बंद करें') }}">×</button>
+  </div>
+  <div id="gw-messages"></div>
+  <div id="gw-input-area">
+    <input type="text" id="gw-input" placeholder="{{ t('Ask about grains...', 'अनाज के बारे में पूछें...') }}">
+    <button id="gw-send" aria-label="{{ t('Send message', 'संदेश भेजें') }}">{{ t("Send", "भेजें") }}</button>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ t("Privacy Policy","गोपनीयता नीति") }} - GrainWala
+{% endblock %}
+
+{% block content %}
+<div class="ppage-wrapper">
+  <div class="ppage-main">
+    <div class="ppage-content-card">
+
+      <h1 class="ppage-title">
+        <i class="fa fa-user-shield"></i>
+        {{ t("Privacy Policy","गोपनीयता नीति") }}
+      </h1>
+
+      <p class="ppage-date">
+        {{ t("Effective Date","प्रभावी तिथि") }} : 24 October 2025
+      </p>
+
+      <h2>{{ t("Privacy Policy","गोपनीयता नीति") }}</h2>
+      <p>
+        {{ t(
+          "The privacy of our visitors at GrainWala is very important to us. We want you to understand the type of information we collect, why we collect it, and how we use it. Please read this policy carefully.",
+          "GrainWala पर आने वाले हमारे उपयोगकर्ताओं की गोपनीयता हमारे लिए अत्यंत महत्वपूर्ण है। हम चाहते हैं कि आप यह समझें कि हम किस प्रकार की जानकारी एकत्र करते हैं, क्यों करते हैं और उसका उपयोग कैसे करते हैं। कृपया इस नीति को ध्यानपूर्वक पढ़ें।"
+        ) }}
+      </p>
+
+      <h3>{{ t("Log File Data","लॉग फ़ाइल डेटा") }}</h3>
+      <p>
+        {{ t(
+          "Like many other websites, log files are stored on the web server saving details such as your IP address, browser type, referrer page, and time of visit. This information is never used to identify individual users and is only for analytics and security.",
+          "अन्य वेबसाइटों की तरह, हमारे वेब सर्वर पर भी लॉग फ़ाइलें संग्रहीत होती हैं जिनमें IP पता, ब्राउज़र प्रकार, रेफ़रर पेज और विज़िट का समय शामिल हो सकता है। इस जानकारी का उपयोग कभी भी किसी व्यक्तिगत उपयोगकर्ता की पहचान के लिए नहीं किया जाता और यह केवल विश्लेषण एवं सुरक्षा के लिए होती है।"
+        ) }}
+      </p>
+
+      <h3>{{ t("Cookies & Personal Data","कुकीज़ और व्यक्तिगत जानकारी") }}</h3>
+      <p>
+        {{ t(
+          "Cookies are small files stored by your browser that allow your preferences to be remembered by the website. They help track site usage and improve your browsing experience. You can disable cookies in your browser anytime—but some site features may not work properly.",
+          "कुकीज़ छोटे फ़ाइल होते हैं जो आपके ब्राउज़र द्वारा संग्रहीत किए जाते हैं ताकि वेबसाइट आपकी प्राथमिकताओं को याद रख सके। ये साइट उपयोग को समझने और आपके अनुभव को बेहतर बनाने में मदद करते हैं। आप कभी भी ब्राउज़र में कुकीज़ बंद कर सकते हैं, लेकिन ऐसा करने पर कुछ सुविधाएँ सही से काम नहीं कर सकतीं।"
+        ) }}
+      </p>
+
+      <ul>
+        <li>
+          {{ t(
+            "We don’t collect any personal data unless you supply it (sign-up/login, order placement etc.).",
+            "हम तब तक कोई व्यक्तिगत जानकारी एकत्र नहीं करते जब तक आप स्वयं न दें (जैसे साइन-अप, लॉगिन, ऑर्डर आदि)।"
+          ) }}
+        </li>
+        <li>
+          {{ t(
+            "We never sell, rent, or use your information except for order fulfillment or website improvement.",
+            "हम आपकी जानकारी को कभी बेचते, किराए पर देते या गलत उपयोग नहीं करते—यह केवल ऑर्डर पूरा करने या वेबसाइट सुधार के लिए उपयोग होती है।"
+          ) }}
+        </li>
+        <li>
+          {{ t(
+            "We only share your information with our trusted partners (payments, delivery) or where required by law.",
+            "आपकी जानकारी केवल हमारे विश्वसनीय साझेदारों (भुगतान, डिलीवरी) के साथ या कानूनी आवश्यकता होने पर ही साझा की जाती है।"
+          ) }}
+        </li>
+      </ul>
+
+      <h3>{{ t("Your Rights","आपके अधिकार") }}</h3>
+      <ul>
+        <li>
+          {{ t(
+            "You have the right to view or correct your stored personal details any time from your account.",
+            "आप अपने खाते से कभी भी अपनी संग्रहीत व्यक्तिगत जानकारी देख या सुधार सकते हैं।"
+          ) }}
+        </li>
+        <li>
+          {{ t(
+            "Contact us at support@grainwala.com to request deletion or for any privacy queries.",
+            "किसी भी गोपनीयता संबंधी प्रश्न या जानकारी हटाने के अनुरोध के लिए support@grainwala.com पर संपर्क करें।"
+          ) }}
+        </li>
+      </ul>
+
+      <h3>{{ t("Data Security","डेटा सुरक्षा") }}</h3>
+      <p>
+        {{ t(
+          "We use strong encryption, SSL, and secure protocols to protect your information. Our security standards are regularly updated.",
+          "हम आपकी जानकारी की सुरक्षा के लिए मजबूत एन्क्रिप्शन, SSL और सुरक्षित प्रोटोकॉल का उपयोग करते हैं। हमारे सुरक्षा मानकों को नियमित रूप से अपडेट किया जाता है।"
+        ) }}
+      </p>
+
+      <h3>{{ t("Policy Updates","नीति में बदलाव") }}</h3>
+      <p>
+        {{ t(
+          "This page will be updated whenever the policy changes. Please check regularly.",
+          "नीति में किसी भी बदलाव की स्थिति में यह पेज अपडेट किया जाएगा। कृपया समय-समय पर जाँच करते रहें।"
+        ) }}
+      </p>
+
+    </div>
+  </div>
+
+  <aside class="ppage-sidebar">
+
+    <div class="ppage-cta-card">
+      <h2>
+        <i class="fa fa-newspaper"></i>
+        {{ t("Newsletter","न्यूज़लेटर") }}
+      </h2>
+      <p>
+        {{ t(
+          "Get fresh offers and updates about GrainWala in your inbox.",
+          "GrainWala से जुड़े नए ऑफ़र और अपडेट सीधे अपने इनबॉक्स में पाएं।"
+        ) }}
+      </p>
+    </div>
+
+    <form class="ppage-news-form" action="{{ url_for('subscribe_newsletter') }}" method="post">
+      <input type="email" name="newsletter_email"
+             placeholder="{{ t('Your email address','अपना ईमेल पता') }}" required>
+      <button type="submit">
+        {{ t("Subscribe","सब्सक्राइब करें") }}
+      </button>
+    </form>
+
+    <div class="ppage-guide-card">
+      <h2>{{ t("Quick Help","त्वरित सहायता") }}</h2>
+      <ol>
+        <li><a href="{{ url_for('about') }}">{{ t("How GrainWala Works","GrainWala कैसे काम करता है") }}</a></li>
+        <li><a href="{{ url_for('support') }}">{{ t("Support & Help","सहायता और समर्थन") }}</a></li>
+        <li><a href="{{ url_for('account') }}">{{ t("Manage Account","खाता प्रबंधन") }}</a></li>
+        <li><a href="{{ url_for('privacy_policy') }}">{{ t("Privacy Policy","गोपनीयता नीति") }}</a></li>
+      </ol>
+    </div>
+
+  </aside>
+</div>
+{% endblock %}

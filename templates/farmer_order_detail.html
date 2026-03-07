@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}
+{{ t("Order Details - Farmer Panel","ऑर्डर विवरण - किसान पैनल") }}
+{% endblock %}
+{% set hide_footer = True %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Back Button -->
+  <a href="{{ url_for('farmer_orders') }}"
+     class="btn btn-outline-success mb-4 fw-bold rounded-3 shadow-sm px-4 py-2">
+    <i class="bi bi-arrow-left"></i>
+    {{ t("Back to Orders","ऑर्डर सूची पर वापस जाएँ") }}
+  </a>
+
+  <!-- Order Info -->
+  <div class="card shadow-lg rounded-4 border-0 mb-4 px-4 py-4 bg-white">
+    <div class="card-header bg-gradient bg-success text-white fw-bold fs-4 rounded-top-4 border-0">
+      <i class="bi bi-receipt-cutoff me-2"></i>
+      {{ t("Order Summary","ऑर्डर सारांश") }}
+    </div>
+
+    <div class="card-body">
+      <div class="row gy-3">
+        <div class="col-md-6">
+          <h6 class="text-muted mb-2 fw-bold">
+            {{ t("Buyer Information","खरीदार की जानकारी") }}
+          </h6>
+          <p class="mb-1"><strong>{{ t("Name","नाम") }}:</strong> {{ order.full_name }}</p>
+          <p class="mb-1"><strong>{{ t("Phone","फ़ोन") }}:</strong> {{ order.phone }}</p>
+          <p class="mb-1">
+            <strong>{{ t("Address","पता") }}:</strong>
+            {{ order.address }}, {{ order.city }}, {{ order.state }} - {{ order.pincode }}
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <h6 class="text-muted mb-2 fw-bold">
+            {{ t("Order Details","ऑर्डर विवरण") }}
+          </h6>
+          <p class="mb-1"><strong>{{ t("Order ID","ऑर्डर आईडी") }}:</strong> {{ order.order_id }}</p>
+          <p class="mb-1"><strong>{{ t("Total Amount","कुल राशि") }}:</strong> ₹{{ order.total_amount }}</p>
+          <p class="mb-1"><strong>{{ t("Payment Method","भुगतान विधि") }}:</strong> {{ order.payment_method }}</p>
+          <p class="mb-1">
+            <strong>{{ t("Date","तारीख") }}:</strong>
+            {% if order.created_at %}
+              {{ order.created_at.strftime('%d %b %Y %H:%M') }}
+            {% else %}
+              -
+            {% endif %}
+          </p>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <!-- Order Status -->
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <h6 class="mb-0 fw-bold text-muted">
+          {{ t("Order Status","ऑर्डर स्थिति") }}:
+        </h6>
+
+        <form method="POST"
+              action="{{ url_for('farmer_update_order_status', order_id=order.order_id) }}"
+              class="d-flex align-items-center gap-2">
+
+          <select name="status"
+                  class="form-select form-select-sm w-auto shadow-sm fw-bold rounded-2">
+            <option value="Placed" {% if order.status=='Placed' %}selected{% endif %}>
+              {{ t("Placed","आदेश प्राप्त") }}
+            </option>
+            <option value="Packed" {% if order.status=='Packed' %}selected{% endif %}>
+              {{ t("Packed","पैक किया गया") }}
+            </option>
+            <option value="Shipped" {% if order.status=='Shipped' %}selected{% endif %}>
+              {{ t("Shipped","भेज दिया गया") }}
+            </option>
+            <option value="Out for Delivery" {% if order.status=='Out for Delivery' %}selected{% endif %}>
+              {{ t("Out for Delivery","डिलीवरी के लिए निकला") }}
+            </option>
+            <option value="Delivered" {% if order.status=='Delivered' %}selected{% endif %}>
+              {{ t("Delivered","डिलीवर हो गया") }}
+            </option>
+
+            {% if order.status in ['Placed','Packed'] %}
+            <option value="Cancelled">
+              {{ t("Cancelled","रद्द किया गया") }}
+            </option>
+            {% endif %}
+          </select>
+
+          <button type="submit"
+                  class="btn btn-success btn-sm rounded-2 fw-bold px-3 shadow-sm">
+            <i class="bi bi-check2-circle"></i>
+            {{ t("Update","अपडेट करें") }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Table -->
+  <div class="card shadow-lg rounded-4 border-0">
+    <div class="card-header bg-light fw-bold fs-5 rounded-top-4 border-0">
+      <i class="bi bi-box2-heart text-success me-2"></i>
+      {{ t("Products in this Order","इस ऑर्डर के उत्पाद") }}
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle text-center mb-0 table-hover shadow-sm">
+          <thead class="table-success">
+            <tr>
+              <th>{{ t("Product","उत्पाद") }}</th>
+              <th>{{ t("Image","चित्र") }}</th>
+              <th>{{ t("Quantity","मात्रा") }}</th>
+              <th>{{ t("Price","मूल्य") }}</th>
+              <th>{{ t("Subtotal","उप-योग") }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for it in items %}
+            <tr>
+              <td class="fw-semibold">{{ it.product_name }}</td>
+
+              <td>
+                {% if it.product_images %}
+                  {% set imgs = it.product_images %}
+                  {% if imgs is string and imgs.startswith('[') %}
+                    {% set arr = imgs | from_json %}
+                    {% if arr %}
+                      <img src="{{ url_for('static', filename='images/' + arr[0]) }}"
+                           width="70" height="70"
+                           class="rounded-3 border shadow-sm"
+                           style="object-fit:cover;">
+                    {% endif %}
+                  {% else %}
+                    <img src="{{ url_for('static', filename='images/' + imgs) }}"
+                         width="70" height="70"
+                         class="rounded-3 border shadow-sm"
+                         style="object-fit:cover;">
+                  {% endif %}
+                {% else %}
+                  <img src="{{ url_for('static', filename='images/no-image.png') }}"
+                       width="70" height="70"
+                       class="rounded-3 border shadow-sm"
+                       style="object-fit:cover;">
+                {% endif %}
+              </td>
+
+              <td class="fw-bold">{{ it.quantity }}</td>
+              <td>₹{{ it.price }}</td>
+              <td class="fw-bold text-success">
+                ₹{{ (it.price | float) * (it.quantity | int) }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+body {
+  background: linear-gradient(135deg, #e6f9e6 0%, #f8fff8 100%);
+}
+.card {
+  border-radius: 20px !important;
+  box-shadow: 0 4px 24px rgba(14, 62, 23, 0.12) !important;
+  padding: 2rem 1.5rem;
+}
+.card-header {
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #39b96d 0%, #81e89a 100%) !important;
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 20px 20px 0 0 !important;
+}
+</style>
+{% endblock %}

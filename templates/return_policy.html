@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}
+{{ t("Return & Refund Policy","रिटर्न और रिफंड नीति") }} - GrainWala
+{% endblock %}
+
+{% block content %}
+<style>
+    .gw-policy-container {
+        max-width: 730px;
+        margin: 60px auto 50px auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(34,139,67,0.09), 0 0.5px 2px rgba(0,0,0,0.07);
+        padding: 46px 42px 36px 42px;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        letter-spacing: 0.01em;
+    }
+    .gw-policy-flex {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 32px;
+        gap: 26px;
+    }
+    .gw-policy-img {
+        width: 155px;
+        min-width: 120px;
+        border-radius: 18px;
+        border: 2.5px solid #dbffd6;
+        box-shadow: 0 3px 18px rgba(34,139,67,0.07);
+        margin:0;
+    }
+    .gw-policy-title {
+        color: #0F7851;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 2px;
+    }
+    .gw-policy-lead {
+        font-size: 1.19rem;
+        color: #32764F;
+        margin-bottom: 2px;
+        margin-top: 0;
+        font-weight: 500;
+    }
+    .gw-policy-section {
+        margin-bottom: 30px;
+    }
+    .gw-policy-section h2 {
+        color: #21A559;
+        font-weight: 700;
+        margin-bottom: 7px;
+        margin-top: 10px;
+        font-size: 1.27rem;
+        border-left: 4px solid #b6f7c6;
+        padding-left: 14px;
+        line-height: 1.2;
+    }
+    .gw-policy-container p, .gw-policy-container li {
+        color: #313a20;
+        font-size: 1.08rem;
+        line-height: 1.8;
+    }
+    .gw-policy-container ol {
+        margin-left: 1.5em;
+    }
+    .gw-policy-container a {
+        color: #00943e;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+</style>
+
+<div class="gw-policy-container">
+    <div class="gw-policy-flex">
+        <img src="{{ url_for('static', filename='images/return-refund.jpg') }}"
+             class="gw-policy-img"
+             alt="{{ t('Return and Refund Illustration','रिटर्न और रिफंड चित्र') }}">
+        <div>
+            <div class="gw-policy-title">
+                {{ t("Return & Refund Policy","रिटर्न और रिफंड नीति") }}
+            </div>
+            <p class="gw-policy-lead">
+                {{ t(
+                "Shop with confidence at GrainWala! Our policies are transparent, hassle-free, and designed to give you the best experience possible.",
+                "GrainWala पर पूरे भरोसे के साथ खरीदारी करें! हमारी नीतियाँ पारदर्शी, सरल और आपको बेहतरीन अनुभव देने के लिए बनाई गई हैं।"
+                ) }}
+            </p>
+        </div>
+    </div>
+
+    <hr style="border: none; border-top: 1.5px solid #eef3ea; margin: 16px 0 30px 0;">
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Returns","रिटर्न") }}</h2>
+        <p>
+            {{ t(
+            "If you are not fully satisfied with your purchase, you can request a return within 7 days of receiving the item. Products must be unused, in original packaging, and include all accessories, labels, and bills for a successful return.",
+            "यदि आप अपनी खरीद से पूरी तरह संतुष्ट नहीं हैं, तो आप वस्तु प्राप्त होने के 7 दिनों के भीतर रिटर्न का अनुरोध कर सकते हैं। रिटर्न के लिए उत्पाद का अप्रयुक्त होना, मूल पैकेजिंग में होना तथा सभी एक्सेसरीज़, लेबल और बिल शामिल होना आवश्यक है।"
+            ) }}
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Refunds","रिफंड") }}</h2>
+        <p>
+            {{ t(
+            "After we receive and inspect your returned item, your refund will be processed within 5-7 business days. Refunds will be credited to your original payment method. In case of partial returns, only the returned item value will be refunded, excluding shipping charges.",
+            "हमारे द्वारा लौटाए गए उत्पाद की जाँच के बाद, आपका रिफंड 5–7 कार्यदिवसों के भीतर प्रोसेस कर दिया जाएगा। रिफंड उसी भुगतान माध्यम में भेजा जाएगा जिससे आपने भुगतान किया था। आंशिक रिटर्न की स्थिति में केवल लौटाए गए उत्पाद की राशि ही रिफंड की जाएगी, शिपिंग शुल्क शामिल नहीं होगा।"
+            ) }}
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Exchanges","एक्सचेंज") }}</h2>
+        <p>
+            {{ t(
+            "To exchange an item, contact our support team within 7 days of delivery. Items must meet the return conditions.",
+            "किसी उत्पाद का एक्सचेंज करने के लिए, डिलीवरी के 7 दिनों के भीतर हमारी सहायता टीम से संपर्क करें। एक्सचेंज के लिए उत्पाद को रिटर्न शर्तों को पूरा करना आवश्यक है।"
+            ) }}
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Return Process","रिटर्न प्रक्रिया") }}</h2>
+        <ol>
+            <li>{{ t(
+            "Email us at support@grainwala.com with your order ID and reason for return.",
+            "अपने ऑर्डर ID और रिटर्न के कारण के साथ support@grainwala.com पर ईमेल करें।"
+            ) }}</li>
+            <li>{{ t(
+            "Our team will review your request and share return shipping details.",
+            "हमारी टीम आपके अनुरोध की समीक्षा कर रिटर्न शिपिंग विवरण साझा करेगी।"
+            ) }}</li>
+            <li>{{ t(
+            "Carefully pack the product and send it to the provided address.",
+            "उत्पाद को सावधानीपूर्वक पैक कर दिए गए पते पर भेजें।"
+            ) }}</li>
+            <li>{{ t(
+            "After inspection, refund/exchange will be initiated as per policy.",
+            "जाँच के बाद नीति के अनुसार रिफंड या एक्सचेंज शुरू किया जाएगा।"
+            ) }}</li>
+        </ol>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Exceptions & Non-Returnable Items","अपवाद और गैर-रिटर्न योग्य उत्पाद") }}</h2>
+        <p>
+            {{ t(
+            "Certain goods are exempt from return, including perishable items, non-returnable products, or damaged/used items after delivery.",
+            "कुछ वस्तुएँ रिटर्न योग्य नहीं होतीं, जैसे नाशवंत उत्पाद (फल-सब्ज़ियाँ), गैर-रिटर्न योग्य चिह्नित वस्तुएँ या डिलीवरी के बाद उपयोग/क्षतिग्रस्त उत्पाद।"
+            ) }}
+        </p>
+    </div>
+
+    <div class="gw-policy-section">
+        <h2>{{ t("Need help?","मदद चाहिए?") }}</h2>
+        <p>
+            {{ t(
+            "Contact us at support@grainwala.com or call +91-XXXXXX1234 for any return or refund related queries.",
+            "रिटर्न या रिफंड से जुड़े किसी भी प्रश्न के लिए support@grainwala.com पर संपर्क करें या +91-XXXXXX1234 पर कॉल करें।"
+            ) }}
+        </p>
+    </div>
+</div>
+{% endblock %}

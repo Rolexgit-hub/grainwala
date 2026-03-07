@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block title %}Home - GrainWala{% endblock %}
+{% block content %}
+
+<div class="container">
+
+  <div class="tagline">
+    <h1>{{ t(
+  "Fresh Grains Direct from Indian Farmers",
+  "भारतीय किसानों से सीधे ताज़ा अनाज"
+) }}</h1>
+    <p>
+       {{ t(
+    "Pure, chemical-free grains from trusted Indian farmers",
+    "विश्वसनीय भारतीय किसानों से शुद्ध और रसायन-मुक्त अनाज"
+  ) }}<br>
+ {{ t(
+    "supporting livelihoods and bringing you nature’s untouched goodness.",
+    "किसानों की आजीविका को सहारा और आपको प्रकृति की शुद्धता"
+  ) }}    </p>
+    <a href="{{ url_for('products_page') }}" class="btn1"> {{ t("Shop Now", "खरीदें") }} →</a>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slideshow-container">
+    <img id="slideshow"
+         src="{{ url_for('static', filename='images/Farm1.jpg') }}"
+         class="farmers-image"
+         data-images='[
+           "{{ url_for("static", filename="images/Farm1.jpg") }}",
+           "{{ url_for("static", filename="images/Farm2.jpg") }}",
+           "{{ url_for("static", filename="images/Farm3.jpg") }}"
+         ]'>
+  </div>
+
+  <!-- ================= FEATURED PRODUCTS ================= -->
+  <section class="featured-products">
+    <h2>{{ t("Featured Products", "विशेष उत्पाद") }}</h2>
+    <div class="product-grid">
+
+      {% for product in featured_products %}
+    <div class="product-card">
+
+  {% if product.image and product.image|length > 0 %}
+    <img src="{{ url_for('static', filename='images/' ~ product.image[0]) }}">
+  {% else %}
+    <img src="{{ url_for('static', filename='images/default.png') }}">
+  {% endif %}
+
+  {% if product.stock_status %}
+    <span class="fresh-stock-badge">{{ product.stock_status }}</span>
+  {% endif %}
+
+  <h3>{{ product.name }}</h3>
+  <p class="price">₹{{ product.price_min }}</p>
+  <p>{{ product.description }}</p>
+
+  <form action="{{ url_for('add_to_wishlist', product_id=product.id) }}" method="POST">
+    <button type="submit">❤️ {{ t("Add to Wishlist", "इच्छा-सूची में जोड़ें") }}</button>
+  </form>
+
+  <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+<label>{{ t("Weight", "वजन") }}</label>
+    <select name="weight">
+      {% for w in product.weights %}
+        <option value="{{ w }}">{{ w }}</option>
+      {% endfor %}
+    </select>
+
+    <div class="quantity">
+      <button type="button" class="minus">-</button>
+      <input type="number" name="qty" value="1" min="1">
+      <button type="button" class="plus">+</button>
+    </div>
+
+    <button type="submit" class="cart-btn">🛒 {{ t("Add to Basket", "कार्ट में जोड़ें") }}</button>
+  </form>
+
+</div>
+
+      {% endfor %}
+    </div>
+  </section>
+
+ <!-- Link to all products -->
+    <div class="view-more">
+      <a href="{{ url_for('products_page') }}" class="btn-more"> {{ t("View More Products", "और उत्पाद देखें") }} →</a>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <h2>{{ t("Why Trust GrainWala?", "GrainWala पर भरोसा क्यों?") }}</h2>
+    <p class="trust-subtitle">
+ {{ t(
+    "We bring you the best quality grains directly from farmers with complete safety and trust.",
+    "हम किसानों से सीधे सर्वोत्तम गुणवत्ता का अनाज पूरी सुरक्षा और विश्वास के साथ लाते हैं।"
+  ) }}    </p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="icon">🌿</div>
+        <h3>{{ t("100% Natural", "100% प्राकृतिक") }}</h3>
+        <p>{{ t(
+  "Chemical-free, freshly packed for your family’s health.",
+  "रसायन-मुक्त, आपके परिवार के स्वास्थ्य के लिए ताज़ा पैक"
+) }}</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">👨‍🌾</div>
+        <h3>{{ t("Direct from Farmers", "सीधे किसानों से") }}</h3>
+        <p>Freshly sourced from trusted farmers.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">🚚</div>
+        <h3>{{ t("Free Delivery ₹500+", "₹500 से ऊपर मुफ्त डिलीवरी") }}</h3>
+        <p>{{ t(
+  "Fast, safe & doorstep delivery.",
+  "तेज़, सुरक्षित और सीधे आपके दरवाज़े तक डिलीवरी।"
+) }}</p>
+      </div>
+      <div class="trust-card">
+        <div class="icon">🔒</div>
+        <h3>{{ t("Secure & Trusted", "सुरक्षित और विश्वसनीय") }}</h3>
+        <p>{{ t(
+  "Safe payments & reliable service.",
+  "सुरक्षित भुगतान और भरोसेमंद सेवा।"
+) }}</p>
+      </div>
+    </div>
+  </section>
+ <!-- ================= POPULAR PRODUCTS ================= -->
+<section class="popular-products">
+  <h2>{{ t("Popular Products", "लोकप्रिय उत्पाद") }}</h2>
+  <div class="product-grid">
+
+    {% for product in popular_products %}
+    <div class="product-card">
+
+      {% if product.image and product.image|length > 0 %}
+        <img src="{{ url_for('static', filename='images/' ~ product.image[0]) }}">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/default.png') }}">
+      {% endif %}
+
+      {% if product.stock_status %}
+        <span class="fresh-stock-badge">{{ product.stock_status }}</span>
+      {% endif %}
+
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹{{ product.price_min }}</p>
+      <p>{{ product.description }}</p>
+
+      <form action="{{ url_for('add_to_wishlist', product_id=product.id) }}" method="POST">
+        <button type="submit">❤️{{ t("Add to Wishlist", "इच्छा-सूची में जोड़ें") }}</button>
+      </form>
+
+      <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST">
+        <label>{{ t("Weight", "वजन") }}</label>
+        <select name="weight">
+          {% for w in product.weights %}
+            <option value="{{ w }}">{{ w }}</option>
+          {% endfor %}
+        </select>
+
+        <div class="quantity">
+          <button type="button" class="minus">-</button>
+          <input type="number" name="qty" value="1" min="1">
+          <button type="button" class="plus">+</button>
+        </div>
+
+        <button type="submit" class="cart-btn">🛒 {{ t("Add to Basket", "कार्ट में जोड़ें") }}</button>
+      </form>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <h2>{{ t("What Our Customers Say", "हमारे ग्राहक क्या कहते हैं") }}</h2>
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/women.jpg') }}" alt="Customer 1" width="120">
+        <p>{{ t(
+  "Fresh vegetables and pulses, really good quality. Delivery was on time!",
+  "सब्ज़ियाँ और दालें बहुत ताज़ा हैं। गुणवत्ता शानदार है और डिलीवरी समय पर मिली।"
+) }}</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- {{ t(
+    "Priya Sharma & Kajal Kumari, Bihar",
+    "प्रिया शर्मा और काजल कुमारी, बिहार"
+  ) }}</span>
+      </div>
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/man1.jpg') }}" alt="Customer 2" width="120">
+        <p>"{{ t(
+    "Grains are chemical-free and directly from farmers. Highly recommended!",
+    "अनाज रसायन-मुक्त है और सीधे किसानों से आता है। बहुत ही अनुशंसित!"
+  ) }}"</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- {{ t(
+    "Rajesh Kumar, Bihar",
+    "राजेश कुमार, बिहार"
+  ) }}</span>
+      </div>
+      <div class="testimonial-card">
+        <img src="{{ url_for('static', filename='images/man2.jpg') }}" alt="Customer 3" width="120">
+        <p> "{{ t(
+    "The rice quality is excellent and packing is fresh. Loved the service.",
+    "चावल की गुणवत्ता बेहतरीन है और पैकिंग ताज़ा है। सेवा बहुत पसंद आई।"
+  ) }}"</p>
+        <h4>⭐ ⭐ ⭐ ⭐ ⭐</h4>
+        <span>- {{ t(
+    "Suraj Kumar, Bihar",
+    "सूरज कुमार, बिहार"
+  ) }}</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

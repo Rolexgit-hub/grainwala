@@ -1,0 +1,16 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hi", "hello", "namaste", "hey"],
+      "responses_en": ["Hello!", "Hi there!", "Hey! How can I help you?"],
+      "responses_hi": ["नमस्ते!", "हाय!", "मैं आपकी कैसे मदद कर सकता हूँ?"]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["bye", "goodbye"],
+      "responses_en": ["Bye!", "See you later!"],
+      "responses_hi": ["अलविदा!", "फिर मिलेंगे!"]
+    }
+  ]
+}

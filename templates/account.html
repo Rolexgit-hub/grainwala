@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% block title %}GrainWala | {{ t("Account","खाता") }}{% endblock %}
+{% set hide_footer = True %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+
+<div class="container">
+    <h1>{{ t("Account","खाता") }}</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showForm('consumer', event)">
+            {{ t("Consumer","ग्राहक") }}
+        </button>
+        <button class="tab-btn" onclick="showForm('farmer', event)">
+            {{ t("Farmer","किसान") }}
+        </button>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- ================= CONSUMER ================= -->
+    <div id="consumer" class="form-section active">
+
+        <!-- CONSUMER LOGIN -->
+        <form class="form active" id="consumer-login" action="{{ url_for('login') }}" method="post">
+            <h2>{{ t("Consumer Login","ग्राहक लॉगिन") }}</h2>
+
+            <input type="text" name="phone"
+                   placeholder="{{ t('Phone Number','फोन नंबर') }}"
+                   required pattern="[0-9]{10}">
+
+            <input type="password" name="password"
+                   placeholder="{{ t('Password','पासवर्ड') }}"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="consumer">
+            <button type="submit">{{ t("Login","लॉगिन") }}</button>
+
+            <p>
+                {{ t("New user?","नया उपयोगकर्ता?") }}
+                <a href="#" onclick="switchForm('consumer','register',event)">
+                    {{ t("Register","रजिस्टर करें") }}
+                </a>
+            </p>
+
+            <p>
+              <a href="{{ url_for('forgot_password') }}">
+                {{ t("Forgot Password?","पासवर्ड भूल गए?") }}
+              </a>
+            </p>
+        </form>
+
+        <!-- CONSUMER REGISTER -->
+        <form class="form" id="consumer-register" action="{{ url_for('register') }}" method="post">
+            <h2>{{ t("Consumer Register","ग्राहक पंजीकरण") }}</h2>
+
+            <input type="text" name="username"
+                   placeholder="{{ t('Full Name','पूरा नाम') }}" required>
+
+            <input type="email" name="email"
+                   placeholder="{{ t('Email','ईमेल') }}" required>
+
+            <input type="text" name="phone"
+                   placeholder="{{ t('Phone Number','फोन नंबर') }}"
+                   required pattern="[0-9]{10}">
+
+            <input type="text" name="address"
+                   placeholder="{{ t('Full Address','पूरा पता') }}" required>
+
+            <select name="district" required>
+                <option value="">{{ t("Select District","जिला चुनें") }}</option>
+                <option>Araria</option><option>Arwal</option><option>Aurangabad</option>
+                <option>Banka</option><option>Begusarai</option><option>Bhagalpur</option>
+                <option>Bhojpur</option><option>Buxar</option><option>Darbhanga</option>
+                <option>East Champaran (Motihari)</option><option>Gaya</option>
+                <option>Gopalganj</option><option>Jamui</option><option>Jehanabad</option>
+                <option>Kaimur (Bhabua)</option><option>Katihar</option>
+                <option>Khagaria</option><option>Kishanganj</option>
+                <option>Lakhisarai</option><option>Madhepura</option>
+                <option>Madhubani</option><option>Munger</option>
+                <option>Muzaffarpur</option><option>Nalanda</option>
+                <option>Nawada</option><option>Patna</option>
+                <option>Purnia</option><option>Rohtas</option>
+                <option>Saharsa</option><option>Samastipur</option>
+                <option>Saran (Chapra)</option><option>Sheikhpura</option>
+                <option>Sheohar</option><option>Sitamarhi</option>
+                <option>Siwan</option><option>Supaul</option>
+                <option>Vaishali</option><option>West Champaran (Bettiah)</option>
+            </select>
+
+            <input type="text" name="state" value="Bihar" readonly>
+            <input type="text" name="pincode"
+                   placeholder="{{ t('Enter Pincode','पिनकोड दर्ज करें') }}" required>
+
+            <input type="password" name="password"
+                   placeholder="{{ t('Password','पासवर्ड') }}"
+                   required minlength="6">
+
+            <input type="password" name="confirm_password"
+                   placeholder="{{ t('Confirm Password','पासवर्ड की पुष्टि करें') }}"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="consumer">
+            <button type="submit">{{ t("Register","रजिस्टर करें") }}</button>
+
+            <p>
+                {{ t("Already have an account?","पहले से खाता है?") }}
+                <a href="#" onclick="switchForm('consumer','login',event)">
+                    {{ t("Login","लॉगिन") }}
+                </a>
+            </p>
+        </form>
+    </div>
+
+    <!-- ================= FARMER ================= -->
+    <div id="farmer" class="form-section">
+
+        <!-- FARMER LOGIN -->
+        <form class="form active" id="farmer-login" action="{{ url_for('login') }}" method="post">
+            <h2>{{ t("Farmer Login","किसान लॉगिन") }}</h2>
+
+            <input type="text" name="phone"
+                   placeholder="{{ t('Phone Number','फोन नंबर') }}"
+                   required pattern="[0-9]{10}">
+
+            <input type="password" name="password"
+                   placeholder="{{ t('Password','पासवर्ड') }}"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="farmer">
+            <button type="submit">{{ t("Login","लॉगिन") }}</button>
+
+            <p>
+                {{ t("New user?","नया उपयोगकर्ता?") }}
+                <a href="#" onclick="switchForm('farmer','register',event)">
+                    {{ t("Register","रजिस्टर करें") }}
+                </a>
+            </p>
+
+            <p>
+              <a href="{{ url_for('forgot_password') }}">
+                {{ t("Forgot Password?","पासवर्ड भूल गए?") }}
+              </a>
+            </p>
+        </form>
+
+        <!-- FARMER REGISTER -->
+        <form class="form" id="farmer-register" action="{{ url_for('register') }}" method="post">
+            <h2>{{ t("Farmer Register","किसान पंजीकरण") }}</h2>
+
+            <input type="text" name="username"
+                   placeholder="{{ t('Farm / Shop Name','खेत / दुकान का नाम') }}" required>
+
+            <input type="email" name="email"
+                   placeholder="{{ t('Email','ईमेल') }}" required>
+
+            <input type="text" name="phone"
+                   placeholder="{{ t('Phone Number','फोन नंबर') }}"
+                   required pattern="[0-9]{10}">
+
+            <input type="text" name="location"
+                   placeholder="{{ t('Full Address','पूरा पता') }}" required>
+
+            <select class="form-control" name="location" required>
+  <option value="">{{ t("Select District", "जिला चुनें") }}</option>
+  <option value="Araria">Araria (अररिया)</option>
+  <option value="Arwal">Arwal (अरवल)</option>
+  <option value="Aurangabad">Aurangabad (औरंगाबाद)</option>
+  <option value="Banka">Banka (बांका)</option>
+  <option value="Begusarai">Begusarai (बेगूसराय)</option>
+  <option value="Bhagalpur">Bhagalpur (भागलपुर)</option>
+  <option value="Bhojpur">Bhojpur (भोजपुर)</option>
+  <option value="Buxar">Buxar (बक्सर)</option>
+  <option value="Darbhanga">Darbhanga (दरभंगा)</option>
+  <option value="East Champaran">East Champaran (Motihari) (पूर्वी चंपारण (मोतिहारी))</option>
+  <option value="Gaya">Gaya (गया)</option>
+  <option value="Gopalganj">Gopalganj (गोपालगंज)</option>
+  <option value="Jamui">Jamui (जमुई)</option>
+  <option value="Jehanabad">Jehanabad (जहानाबाद)</option>
+  <option value="Kaimur">Kaimur (Bhabua) (कैमूर (भभुआ))</option>
+  <option value="Katihar">Katihar (कटिहार)</option>
+  <option value="Khagaria">Khagaria (खगड़िया)</option>
+  <option value="Kishanganj">Kishanganj (किशनगंज)</option>
+  <option value="Lakhisarai">Lakhisarai (लखीसराय)</option>
+  <option value="Madhepura">Madhepura (मधेपुरा)</option>
+  <option value="Madhubani">Madhubani (मधुबनी)</option>
+  <option value="Munger">Munger (मुंगेर)</option>
+  <option value="Muzaffarpur">Muzaffarpur (मुजफ्फरपुर)</option>
+  <option value="Nalanda">Nalanda (नालंदा)</option>
+  <option value="Nawada">Nawada (नवादा)</option>
+  <option value="Patna">Patna (पटना)</option>
+  <option value="Purnia">Purnia (पूर्णिया)</option>
+  <option value="Rohtas">Rohtas (रोहतास)</option>
+  <option value="Saharsa">Saharsa (सहरसा)</option>
+  <option value="Samastipur">Samastipur (समस्तीपुर)</option>
+  <option value="Saran">Saran (Chapra) (सरान (छपरा))</option>
+  <option value="Sheikhpura">Sheikhpura (शेखपुरा)</option>
+  <option value="Sheohar">Sheohar (शिवहर)</option>
+  <option value="Sitamarhi">Sitamarhi (सीतामढ़ी)</option>
+  <option value="Siwan">Siwan (सिवान)</option>
+  <option value="Supaul">Supaul (सुपौल)</option>
+  <option value="Vaishali">Vaishali (वैशाली)</option>
+  <option value="West Champaran">West Champaran (Bettiah) (पश्चिमी चंपारण (बेतिया))</option>
+</select>
+
+
+            <input type="text" name="state" value="Bihar" readonly>
+            <input type="text" name="pincode"
+                   placeholder="{{ t('Enter Pincode','पिनकोड दर्ज करें') }}" required>
+
+            <input type="text" name="crop_type"
+                   placeholder="{{ t('Crop Type','फसल का प्रकार') }}" required>
+
+            <input type="text" name="payment_details"
+                   placeholder="{{ t('UPI / Bank Details','यूपीआई / बैंक विवरण') }}" required>
+
+            <input type="password" name="password"
+                   placeholder="{{ t('Password','पासवर्ड') }}"
+                   required minlength="6">
+
+            <input type="password" name="confirm_password"
+                   placeholder="{{ t('Confirm Password','पासवर्ड की पुष्टि करें') }}"
+                   required minlength="6">
+
+            <input type="hidden" name="user_type" value="farmer">
+            <button type="submit">{{ t("Register","रजिस्टर करें") }}</button>
+
+            <p>
+                {{ t("Already have an account?","पहले से खाता है?") }}
+                <a href="#" onclick="switchForm('farmer','login',event)">
+                    {{ t("Login","लॉगिन") }}
+                </a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+function showForm(type, event) {
+    document.querySelectorAll(".form-section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById(type).classList.add("active");
+    event.target.classList.add("active");
+}
+
+function switchForm(userType, formType, event) {
+    event.preventDefault();
+    document.querySelectorAll(`#${userType} .form`).forEach(f => f.classList.remove("active"));
+    document.getElementById(`${userType}-${formType}`).classList.add("active");
+}
+</script>
+
+{% endblock %}

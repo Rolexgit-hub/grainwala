@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}
+{{ t("My Orders","मेरे ऑर्डर") }}
+{% endblock %}
+
+{% block content %}
+<style>
+.orders-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.orders-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #007b5e;
+}
+.order-card {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+.order-card:hover {
+  background: #f9f9f9;
+}
+.order-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 14px;
+  margin-top: 8px;
+}
+.status {
+  font-weight: bold;
+}
+.status.Pending { color: orange; }
+.status.Completed { color: green; }
+.status.Cancelled { color: red; }
+.view-link {
+  text-decoration: none;
+  background: #007b5e;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.view-link:hover {
+  background: #005d49;
+}
+</style>
+
+<div class="orders-container">
+  <h2>📦 {{ t("My Orders","मेरे ऑर्डर") }}</h2>
+
+  {% if orders %}
+    {% for order in orders %}
+      <div class="order-card">
+        <div>
+          <strong>{{ t("Order ID","ऑर्डर आईडी") }}:</strong> {{ order.order_id }}
+        </div>
+
+        <div class="order-meta">
+          <div>💰 {{ t("Total","कुल राशि") }}: ₹{{ order.total_amount }}</div>
+
+          <div>
+            📅 {{ order.created_at.strftime('%d %b %Y %I:%M %p') }}
+          </div>
+
+          <div class="status {{ order.status }}">
+            {{ t(order.status, 
+              "Pending" if order.status=="Pending" else
+              "Completed" if order.status=="Completed" else
+              "Cancelled") }}
+          </div>
+
+          <div>
+            <a class="view-link"
+               href="{{ url_for('consumer_order_detail', order_id=order.order_id) }}">
+              {{ t("View Details","विवरण देखें") }}
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align:center; color:#555;">
+      {{ t("You have not placed any orders yet.",
+           "आपने अभी तक कोई ऑर्डर नहीं किया है।") }}
+    </p>
+  {% endif %}
+</div>
+{% endblock %}
