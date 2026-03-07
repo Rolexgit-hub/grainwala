@@ -4,3 +4,4 @@ mysqlclient
 gunicorn
 PyMySQL==1.1.2
 Flask-Babel
+scikit-learn
